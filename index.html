@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#7447df">
+<title>Math Masti World</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4efff;color:#30234b;text-align:center}
+header{background:linear-gradient(120deg,#7045dc,#bd73f5);color:white;padding:25px 12px;border-radius:0 0 28px 28px}
+h1{font-size:30px;margin:5px}
+main{max-width:480px;margin:auto;padding:15px}
+.card{background:white;padding:18px;margin:14px 0;border-radius:22px;box-shadow:0 4px 15px #ddd}
+select,button{padding:13px;border:0;border-radius:13px;font-size:16px;margin:6px}
+button{background:#7045dc;color:white;cursor:pointer}
+.menu button{width:43%;min-height:65px;font-weight:bold}
+.answer{width:42%;background:#eee;color:#30234b;font-weight:bold}
+#question{font-size:29px;font-weight:bold;margin:22px}
+#message{font-size:19px;min-height:28px}
+</style>
+</head>
+<body>
+<header>
+<h1>🌈 Math Masti World</h1>
+<p>Learn • Play • Enjoy Mathematics!</p>
+</header>
+<main>
+<div class="card">
+<h2>Welcome, Little Champion! 🏆</h2>
+<p>Choose Language / भाषा चुनें</p>
+<select id="lang">
+<option value="en">English</option>
+<option value="hi">हिंदी</option>
+</select>
+<p>Choose Your Age</p>
+<select id="age">
+<option value="5">5 Years</option>
+<option value="6">6 Years</option>
+<option value="7">7 Years</option>
+<option value="8">8 Years</option>
+</select>
+</div>
+<div class="card menu">
+<h2 id="heading">Choose Your Game 🎮</h2>
+<button onclick="start('add')">➕ Addition</button>
+<button onclick="start('sub')">➖ Subtraction</button>
+<button onclick="start('mul')">✖️ Multiply</button>
+<button onclick="start('div')">➗ Division</button>
+</div>
+<div class="card" id="game" hidden>
+<h2 id="gameTitle">Math Quiz</h2>
+<p id="progress"></p>
+<div id="question"></div>
+<div id="answers"></div>
+<p id="message"></p>
+<p id="score">⭐ Stars: 0</p>
+<button id="next" onclick="next()" hidden>Next ➜</button>
+</div>
+</main>
+<script>
+let type='add',a,b,correct,stars=0,count=0;
+function start(t){
+type=t;stars=0;count=0;
+document.getElementById('game').hidden=false;
+next();
+document.getElementById('game').scrollIntoView({behavior:'smooth'});
+}
+function next(){
+if(count>=10){
+document.getElementById('question').textContent='🏆 Game Completed!';
+document.getElementById('answers').innerHTML='';
+document.getElementById('message').textContent='Your final score: '+stars+'/10 ⭐';
+document.getElementById('next').hidden=true;
+return;
+}
+count++;
+let max=Number(document.getElementById('age').value)*3;
+a=Math.floor(Math.random()*max)+1;
+b=Math.floor(Math.random()*max)+1;
+if(type==='sub'&&b>a)[a,b]=[b,a];
+if(type==='div')a=a*b;
+correct=type==='add'?a+b:type==='sub'?a-b:type==='mul'?a*b:a/b;
+let sign={add:'+',sub:'−',mul:'×',div:'÷'}[type];
+document.getElementById('progress').textContent='Question '+count+'/10';
+document.getElementById('question').textContent=a+' '+sign+' '+b+' = ?';
+document.getElementById('message').textContent='';
+document.getElementById('next').hidden=true;
+let opts=[correct,correct+1,Math.max(0,correct-1),correct+2];
+opts.sort(()=>Math.random()-.5);
+document.getElementById('answers').innerHTML=opts.map(n=>'<button class="answer" onclick="check('+n+')">'+n+'</button>').join('');
+}
+function check(n){
+let buttons=document.querySelectorAll('.answer');
+if(buttons[0].disabled)return;
+if(n===correct){
+stars++;
+document.getElementById('message').textContent='Amazing! Correct Answer! 🎉';
+}else{
+document.getElementById('message').textContent='Good Try! Answer: '+correct;
+}
+document.getElementById('score').textContent='⭐ Stars: '+stars;
+buttons.forEach(x=>x.disabled=true);
+document.getElementById('next').hidden=false;
+}
+</script>
+</body>
+</html>
