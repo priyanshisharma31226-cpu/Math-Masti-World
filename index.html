@@ -4,187 +4,496 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="theme-color" content="#4935B5">
+<meta name="description" content="Math Masti World - Fun Mathematics Learning App for Kids">
 <title>Math Masti World</title>
 
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/png" href="./icon-192.png">
 <link rel="apple-touch-icon" href="./icon-192.png">
 
-<meta name="theme-color" content="#1565C0">
-<meta name="description" content="Fun Mathematics Learning App for Kids">
-
 <style>
 *{box-sizing:border-box}
 body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#f4efff;
-color:#30234b;
-text-align:center
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#f4f5ff;
+ color:#25234b;
 }
 header{
-background:linear-gradient(120deg,#1565C0,#7045dc);
-color:white;
-padding:25px 12px;
-border-radius:0 0 28px 28px
+ background:linear-gradient(135deg,#4935B5,#7655E8);
+ color:white;
+ padding:30px 18px 35px;
+ border-radius:0 0 32px 32px;
+ text-align:center;
 }
-h1{font-size:30px;margin:5px}
-main{max-width:480px;margin:auto;padding:15px}
+.logo{font-size:48px}
+h1{font-size:27px;margin:8px 0}
+header p{margin:5px;color:#e8e3ff}
+main{max-width:520px;margin:auto;padding:16px}
 .card{
-background:white;
-padding:18px;
-margin:14px 0;
-border-radius:22px;
-box-shadow:0 4px 15px #ddd
+ background:white;
+ padding:20px;
+ margin:16px 0;
+ border-radius:23px;
+ box-shadow:0 7px 22px rgba(50,40,110,.08);
 }
-select,button{
-padding:13px;
-border:0;
-border-radius:13px;
-font-size:16px;
-margin:6px
+.welcome{
+ background:linear-gradient(135deg,#fff,#f0ebff);
 }
-button{
-background:#7045dc;
-color:white;
-cursor:pointer
+.welcome h2{margin:5px 0 10px}
+.settings{
+ display:flex;
+ gap:10px;
+ margin-top:15px;
 }
-.menu button{width:43%;min-height:65px;font-weight:bold}
+.settings div{flex:1;text-align:left}
+label{font-size:13px;font-weight:bold}
+select{
+ width:100%;
+ padding:12px;
+ margin-top:7px;
+ border:1px solid #ded9f5;
+ border-radius:12px;
+ background:white;
+ font-size:15px;
+ color:#30234b;
+}
+.section-title{
+ font-size:20px;
+ margin:5px 0 16px;
+}
+.menu{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+}
+.game-btn{
+ border:0;
+ border-radius:18px;
+ min-height:105px;
+ padding:13px 5px;
+ color:white;
+ font-size:17px;
+ font-weight:bold;
+ cursor:pointer;
+ box-shadow:0 5px 12px rgba(0,0,0,.08);
+}
+.game-btn span{
+ display:block;
+ font-size:30px;
+ margin-bottom:8px;
+}
+.add{background:linear-gradient(135deg,#16b98c,#0b9478)}
+.sub{background:linear-gradient(135deg,#ffad42,#f08028)}
+.mul{background:linear-gradient(135deg,#4b8df5,#3565d9)}
+.div{background:linear-gradient(135deg,#a66be9,#7541c5)}
+.stats{
+ display:flex;
+ gap:10px;
+}
+.stat{
+ flex:1;
+ text-align:center;
+ padding:13px 5px;
+ background:#f4f1ff;
+ border-radius:15px;
+}
+.stat strong{
+ display:block;
+ font-size:23px;
+ color:#6546cb;
+}
+.stat small{color:#777}
+#game{display:none}
+.game-top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+}
+.pill{
+ background:#f0edff;
+ color:#6044bd;
+ padding:8px 12px;
+ border-radius:20px;
+ font-size:13px;
+ font-weight:bold;
+}
+.progress-bar{
+ height:9px;
+ background:#eeeaf9;
+ border-radius:20px;
+ margin:16px 0;
+ overflow:hidden;
+}
+#progressFill{
+ height:100%;
+ width:0%;
+ background:linear-gradient(90deg,#7655e8,#29c79b);
+ transition:.3s;
+}
+#question{
+ font-size:36px;
+ font-weight:bold;
+ text-align:center;
+ margin:25px 0;
+ color:#392c79;
+}
+#answers{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+}
 .answer{
-width:42%;
-background:#eee;
-color:#30234b;
-font-weight:bold
+ padding:17px 8px;
+ border:2px solid #e9e4fa;
+ background:#faf9ff;
+ color:#3c3472;
+ border-radius:15px;
+ font-size:21px;
+ font-weight:bold;
+ cursor:pointer;
 }
-button:disabled{opacity:.6}
-#question{font-size:29px;font-weight:bold;margin:22px}
-#message{font-size:19px;min-height:28px}
+.answer:disabled{cursor:default;opacity:1}
+.answer.correct{background:#dcf9eb;border-color:#20b879;color:#087a4c}
+.answer.wrong{background:#ffe6e6;border-color:#ed6868;color:#c03939}
+#message{
+ text-align:center;
+ font-weight:bold;
+ font-size:17px;
+ min-height:28px;
+ margin:17px 0;
+}
+.primary{
+ width:100%;
+ padding:15px;
+ background:linear-gradient(135deg,#4935B5,#7655E8);
+ color:white;
+ border:0;
+ border-radius:14px;
+ font-size:17px;
+ font-weight:bold;
+ cursor:pointer;
+}
+.secondary{
+ background:#eeeaff;
+ color:#513ba9;
+}
+.result{text-align:center}
+.result-icon{font-size:65px}
+.result h2{color:#563db4}
+.result-score{
+ font-size:40px;
+ color:#6245c7;
+ font-weight:bold;
+ margin:15px;
+}
+footer{
+ text-align:center;
+ padding:20px;
+ color:#888;
+ font-size:13px;
+}
+button:active{transform:scale(.97)}
+@media(max-width:360px){
+ .settings{flex-direction:column}
+ #question{font-size:30px}
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>🌈 Math Masti World</h1>
-<p>Learn • Play • Enjoy Mathematics!</p>
+ <div class="logo">🌈</div>
+ <h1>Math Masti World</h1>
+ <p id="tagline">Learn • Play • Enjoy Mathematics!</p>
 </header>
 
 <main>
 
+<div class="card welcome">
+ <h2 id="welcome">Welcome, Little Champion! 🏆</h2>
+ <p id="intro">Get ready to become a Math Star!</p>
+
+ <div class="settings">
+  <div>
+   <label id="languageLabel">Language</label>
+   <select id="lang" onchange="changeLanguage()">
+    <option value="en">English</option>
+    <option value="hi">हिंदी</option>
+   </select>
+  </div>
+  <div>
+   <label id="ageLabel">Your Age</label>
+   <select id="age">
+    <option value="5">5 Years</option>
+    <option value="6">6 Years</option>
+    <option value="7">7 Years</option>
+    <option value="8">8 Years</option>
+   </select>
+  </div>
+ </div>
+</div>
+
 <div class="card">
-<h2>Welcome, Little Champion! 🏆</h2>
-<p>Choose Language / भाषा चुनें</p>
+ <h2 class="section-title" id="chooseTitle">🎮 Choose Your Game</h2>
 
-<select id="lang">
-<option value="en">English</option>
-<option value="hi">हिंदी</option>
-</select>
-
-<p>Choose Your Age</p>
-
-<select id="age">
-<option value="5">5 Years</option>
-<option value="6">6 Years</option>
-<option value="7">7 Years</option>
-<option value="8">8 Years</option>
-</select>
+ <div class="menu">
+  <button class="game-btn add" onclick="start('add')">
+   <span>➕</span><span id="addText">Addition</span>
+  </button>
+  <button class="game-btn sub" onclick="start('sub')">
+   <span>➖</span><span id="subText">Subtraction</span>
+  </button>
+  <button class="game-btn mul" onclick="start('mul')">
+   <span>✖️</span><span id="mulText">Multiplication</span>
+  </button>
+  <button class="game-btn div" onclick="start('div')">
+   <span>➗</span><span id="divText">Division</span>
+  </button>
+ </div>
 </div>
 
-<div class="card menu">
-<h2 id="heading">Choose Your Game 🎮</h2>
-<button onclick="start('add')">➕ Addition</button>
-<button onclick="start('sub')">➖ Subtraction</button>
-<button onclick="start('mul')">✖️ Multiply</button>
-<button onclick="start('div')">➗ Division</button>
+<div class="card" id="game">
+ <div class="game-top">
+  <span class="pill" id="gameTitle">Math Quiz</span>
+  <span class="pill" id="score">⭐ 0</span>
+ </div>
+
+ <div class="progress-bar">
+  <div id="progressFill"></div>
+ </div>
+
+ <p id="progress">Question 1/10</p>
+ <div id="question">5 + 3 = ?</div>
+ <div id="answers"></div>
+ <p id="message"></p>
+ <button class="primary" id="next" onclick="next()" style="display:none">Next ➜</button>
+ <button class="primary secondary" id="home" onclick="goHome()" style="margin-top:10px">🏠 Home</button>
 </div>
 
-<div class="card" id="game" hidden>
-<h2 id="gameTitle">Math Quiz</h2>
-<p id="progress"></p>
-<div id="question"></div>
-<div id="answers"></div>
-<p id="message"></p>
-<p id="score">⭐ Stars: 0</p>
-<button id="next" onclick="next()" hidden>Next ➜</button>
+<div class="card stats">
+ <div class="stat">
+  <strong>4</strong>
+  <small id="gamesLabel">Math Games</small>
+ </div>
+ <div class="stat">
+  <strong>10</strong>
+  <small id="questionsLabel">Questions</small>
+ </div>
+ <div class="stat">
+  <strong>⭐</strong>
+  <small id="funLabel">Have Fun!</small>
+ </div>
 </div>
+
+<footer>
+ <p>🌈 Math Masti World</p>
+ <p id="footerText">Learn Today • Shine Tomorrow</p>
+</footer>
 
 </main>
 
 <script>
 let type='add',a,b,correct,stars=0,count=0;
+let answered=false;
+
+const translations={
+ en:{
+  tagline:'Learn • Play • Enjoy Mathematics!',
+  welcome:'Welcome, Little Champion! 🏆',
+  intro:'Get ready to become a Math Star!',
+  language:'Language',age:'Your Age',
+  choose:'🎮 Choose Your Game',
+  add:'Addition',sub:'Subtraction',
+  mul:'Multiplication',div:'Division',
+  games:'Math Games',questions:'Questions',fun:'Have Fun!',
+  title:'Math Quiz',question:'Question',
+  next:'Next ➜',home:'🏠 Home',
+  correct:'Amazing! Correct Answer! 🎉',
+  wrong:'Good Try! Correct answer: ',
+  completed:'🏆 Game Completed!',
+  final:'Your Final Score',
+  excellent:'Fantastic! You are a Math Star! 🌟',
+  good:'Great Job! Keep Practising! 👏',
+  retry:'Play Again 🔄',
+  footer:'Learn Today • Shine Tomorrow'
+ },
+ hi:{
+  tagline:'सीखें • खेलें • गणित का आनंद लें!',
+  welcome:'स्वागत है छोटे चैंपियन! 🏆',
+  intro:'बनिए गणित के सुपरस्टार!',
+  language:'भाषा',age:'आपकी उम्र',
+  choose:'🎮 अपना गेम चुनें',
+  add:'जोड़',sub:'घटाव',
+  mul:'गुणा',div:'भाग',
+  games:'मैथ गेम',questions:'सवाल',fun:'मस्ती करें!',
+  title:'गणित क्विज',question:'सवाल',
+  next:'अगला ➜',home:'🏠 होम',
+  correct:'शाबाश! सही जवाब! 🎉',
+  wrong:'अच्छी कोशिश! सही जवाब: ',
+  completed:'🏆 गेम पूरा हुआ!',
+  final:'आपका अंतिम स्कोर',
+  excellent:'बहुत खूब! आप गणित के स्टार हैं! 🌟',
+  good:'बहुत अच्छा! अभ्यास करते रहें! 👏',
+  retry:'फिर से खेलें 🔄',
+  footer:'आज सीखें • कल चमकें'
+ }
+};
+
+function tr(key){
+ return translations[document.getElementById('lang').value][key];
+}
+
+function changeLanguage(){
+ const keys={
+  tagline:'tagline',welcome:'welcome',intro:'intro',
+  language:'language',age:'age',choose:'choose',
+  add:'add',sub:'sub',mul:'mul',div:'div',
+  games:'games',questions:'questions',fun:'fun',
+  footer:'footer'
+ };
+
+ Object.keys(keys).forEach(id=>{
+  document.getElementById(id==='games'?'gamesLabel':
+   id==='questions'?'questionsLabel':
+   id==='fun'?'funLabel':
+   id==='footer'?'footerText':
+   id==='language'?'languageLabel':
+   id==='age'?'ageLabel':
+   id==='choose'?'chooseTitle':
+   id==='tagline'?'tagline':
+   id==='welcome'?'welcome':
+   id==='intro'?'intro':
+   id==='add'?'addText':
+   id==='sub'?'subText':
+   id==='mul'?'mulText':'divText'
+  ).textContent=tr(keys[id]);
+ });
+
+ document.getElementById('home').textContent=tr('home');
+ document.getElementById('next').textContent=tr('next');
+}
 
 function start(t){
-type=t;
-stars=0;
-count=0;
-document.getElementById('score').textContent='⭐ Stars: 0';
-document.getElementById('game').hidden=false;
-next();
-document.getElementById('game').scrollIntoView({behavior:'smooth'});
+ type=t;
+ stars=0;
+ count=0;
+ document.getElementById('game').style.display='block';
+ document.getElementById('gameTitle').textContent=tr('title');
+ document.getElementById('score').textContent='⭐ 0';
+ next();
+ document.getElementById('game').scrollIntoView({behavior:'smooth'});
 }
 
 function next(){
 
-if(count>=10){
-document.getElementById('question').textContent='🏆 Game Completed!';
-document.getElementById('answers').innerHTML='';
-document.getElementById('message').textContent='Your final score: '+stars+'/10 ⭐';
-document.getElementById('next').hidden=true;
-return;
+ if(count>=10){
+  showResult();
+  return;
+ }
+
+ count++;
+ answered=false;
+
+ let max=Number(document.getElementById('age').value)*3;
+
+ a=Math.floor(Math.random()*max)+1;
+ b=Math.floor(Math.random()*max)+1;
+
+ if(type==='sub' && b>a)[a,b]=[b,a];
+ if(type==='div')a=a*b;
+
+ correct=type==='add'?a+b:
+ type==='sub'?a-b:
+ type==='mul'?a*b:a/b;
+
+ let sign={add:'+',sub:'−',mul:'×',div:'÷'}[type];
+
+ document.getElementById('progress').textContent=
+ tr('question')+' '+count+'/10';
+
+ document.getElementById('progressFill').style.width=
+ (count*10)+'%';
+
+ document.getElementById('question').textContent=
+ a+' '+sign+' '+b+' = ?';
+
+ document.getElementById('message').textContent='';
+ document.getElementById('next').style.display='none';
+
+ let opts=new Set([correct]);
+ while(opts.size<4){
+  let offset=Math.floor(Math.random()*7)-3;
+  if(offset===0)continue;
+  let value=correct+offset;
+  if(value>=0 && Number.isInteger(value))opts.add(value);
+ }
+ let arr=[...opts].sort(()=>Math.random()-.5);
+
+ document.getElementById('answers').innerHTML=
+ arr.map(n=>'<button class="answer" onclick="check('+n+',this)">'+n+'</button>').join('');
 }
 
-count++;
+function check(n,btn){
 
-let max=Number(document.getElementById('age').value)*3;
+ if(answered)return;
+ answered=true;
 
-a=Math.floor(Math.random()*max)+1;
-b=Math.floor(Math.random()*max)+1;
+ let buttons=document.querySelectorAll('.answer');
 
-if(type==='sub'&&b>a)[a,b]=[b,a];
-if(type==='div')a=a*b;
+ buttons.forEach(x=>{
+  x.disabled=true;
+  if(Number(x.textContent)===correct)x.classList.add('correct');
+ });
 
-correct=type==='add'?a+b:
-type==='sub'?a-b:
-type==='mul'?a*b:a/b;
+ if(n===correct){
+  stars++;
+  document.getElementById('message').textContent=tr('correct');
+ }else{
+  btn.classList.add('wrong');
+  document.getElementById('message').textContent=
+  tr('wrong')+correct;
+ }
 
-let sign={add:'+',sub:'−',mul:'×',div:'÷'}[type];
-
-document.getElementById('progress').textContent='Question '+count+'/10';
-document.getElementById('question').textContent=a+' '+sign+' '+b+' = ?';
-document.getElementById('message').textContent='';
-document.getElementById('next').hidden=true;
-
-let opts=[correct,correct+1,Math.max(0,correct-1),correct+2];
-opts.sort(()=>Math.random()-.5);
-
-document.getElementById('answers').innerHTML=
-opts.map(n=>'<button class="answer" onclick="check('+n+')">'+n+'</button>').join('');
+ document.getElementById('score').textContent='⭐ '+stars;
+ document.getElementById('next').style.display='block';
 }
 
-function check(n){
+function showResult(){
 
-let buttons=document.querySelectorAll('.answer');
-if(buttons.length===0||buttons[0].disabled)return;
+ document.getElementById('progressFill').style.width='100%';
+ document.getElementById('progress').textContent=tr('completed');
+ document.getElementById('question').textContent='🏆';
+ document.getElementById('answers').innerHTML=`
+ <div class="result" style="grid-column:1/-1">
+  <div class="result-icon">🎉</div>
+  <h2>${tr('final')}</h2>
+  <div class="result-score">${stars}/10 ⭐</div>
+  <h3>${stars>=8?tr('excellent'):tr('good')}</h3>
+ </div>`;
 
-if(n===correct){
-stars++;
-document.getElementById('message').textContent='Amazing! Correct Answer! 🎉';
-}else{
-document.getElementById('message').textContent='Good Try! Answer: '+correct;
+ document.getElementById('message').textContent='';
+ document.getElementById('next').textContent=tr('retry');
+ document.getElementById('next').style.display='block';
+ document.getElementById('next').onclick=()=>start(type);
 }
 
-document.getElementById('score').textContent='⭐ Stars: '+stars;
-buttons.forEach(x=>x.disabled=true);
-document.getElementById('next').hidden=false;
+function goHome(){
+ document.getElementById('game').style.display='none';
+ document.querySelector('.welcome').scrollIntoView({behavior:'smooth'});
 }
 
 if("serviceWorker" in navigator){
-window.addEventListener("load",()=>{
-navigator.serviceWorker.register("./service-worker.js")
-.catch(error=>console.log("Service Worker Error:",error));
-});
+ window.addEventListener("load",()=>{
+  navigator.serviceWorker.register("./service-worker.js")
+  .catch(error=>console.log("Service Worker Error:",error));
+ });
 }
+
+changeLanguage();
 </script>
 
 </body>
