@@ -1,40 +1,594 @@
-.game-btn{
-  width:100%;
-  min-width:0;
-  min-height:100px;
-  padding:12px 5px;
-  border:0;
-  border-radius:18px;
-  color:white;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
-  overflow-wrap:anywhere;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#4935B5">
+<meta name="description" content="Math Masti World - Fun Mathematics Learning App">
+<title>Math Masti World</title>
+<link rel="manifest" href="./manifest.json">
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.game-btn span:first-child{
-  display:block;
-  font-size:28px;
-  margin-bottom:7px;
+body {
+  font-family: 'Trebuchet MS', Arial, sans-serif;
+  background: linear-gradient(135deg,#e8eaff,#f8eaff);
+  color: #29234d;
+  min-height: 100vh;
 }
 
-.game-btn span:last-child{
-  display:block;
-  font-size:16px;
-  line-height:1.3;
+header {
+  background: linear-gradient(135deg,#4935B5,#8156e8);
+  color: white;
+  text-align: center;
+  padding: 25px 15px;
+  border-radius: 0 0 30px 30px;
+  box-shadow: 0 5px 15px #7774;
 }
 
-.menu{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;
-  width:100%;
+header h1 {
+  font-size: 28px;
+  margin-bottom: 7px;
 }
 
-@media(max-width:360px){
-  main{padding:10px}
-  .card{padding:14px}
-  .menu{gap:8px}
-  .game-btn{font-size:14px;padding:10px 3px}
-  .game-btn span:last-child{font-size:14px}
+header p {
+  font-size: 14px;
 }
+
+.language {
+  text-align: right;
+  padding: 12px;
+}
+
+.language button {
+  background: white;
+  border: 2px solid #6546cf;
+  padding: 8px 15px;
+  border-radius: 20px;
+  color: #4935B5;
+  font-weight: bold;
+}
+
+main {
+  max-width: 600px;
+  margin: auto;
+  padding: 15px;
+}
+
+.card {
+  background: white;
+  padding: 22px;
+  border-radius: 22px;
+  margin-bottom: 18px;
+  box-shadow: 0 5px 18px #4935B51a;
+}
+
+h2 {
+  color: #4935B5;
+  margin-bottom: 15px;
+  font-size: 21px;
+}
+
+label {
+  display: block;
+  margin: 12px 0 7px;
+  font-weight: bold;
+}
+
+select {
+  width: 100%;
+  padding: 13px;
+  border: 2px solid #ddd5ff;
+  border-radius: 12px;
+  font-size: 16px;
+  background: #faf9ff;
+}
+
+.menu {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 12px;
+}
+
+.game-btn {
+  width: 100%;
+  min-width: 0;
+  min-height: 100px;
+  padding: 12px 5px;
+  border: none;
+  border-radius: 18px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.game-btn span {
+  display: block;
+  font-size: 28px;
+  margin-bottom: 7px;
+}
+
+.add {background: linear-gradient(135deg,#ff8b47,#ffbd54)}
+.sub {background: linear-gradient(135deg,#399ce8,#54c8ff)}
+.mul {background: linear-gradient(135deg,#8e56df,#bb7aff)}
+.div {background: linear-gradient(135deg,#17ae91,#57d6b5)}
+
+.main-btn {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg,#4935B5,#8756e8);
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+button:active {
+  transform: scale(.98);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.quiz-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  font-weight: bold;
+  color: #6546cf;
+}
+
+.progress {
+  background: #eeeaff;
+  height: 10px;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg,#4935B5,#bd70ff);
+  transition: width .3s;
+}
+
+.question {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  padding: 25px 5px;
+  color: #4935B5;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 12px;
+}
+
+.option {
+  padding: 17px 8px;
+  background: #f3efff;
+  border: 2px solid #ddd2ff;
+  border-radius: 14px;
+  font-size: 21px;
+  font-weight: bold;
+  color: #4935B5;
+  cursor: pointer;
+}
+
+.option.correct {
+  background: #d9ffe9;
+  border-color: #23b96c;
+  color: #087b40;
+}
+
+.option.wrong {
+  background: #ffe1e1;
+  border-color: #ed5555;
+  color: #bd2020;
+}
+
+.option:disabled {
+  cursor: default;
+}
+
+.feedback {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 18px;
+  min-height: 25px;
+  font-size: 17px;
+}
+
+.result {
+  text-align: center;
+}
+
+.result .big {
+  font-size: 65px;
+  margin: 10px;
+}
+
+.result h2 {
+  font-size: 27px;
+}
+
+.score {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4935B5;
+  margin: 15px;
+}
+
+footer {
+  text-align: center;
+  padding: 22px;
+  color: #777;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🌟 Math Masti World</h1>
+  <p id="tagline">Learn Mathematics with Fun!</p>
+</header>
+
+<div class="language">
+  <button onclick="toggleLanguage()" id="langBtn">हिंदी</button>
+</div>
+
+<main>
+
+<section class="card" id="home">
+  <h2 id="welcome">👋 Welcome, Little Champion!</h2>
+  <p id="intro">Let's make Mathematics easy and exciting!</p>
+
+  <label id="ageLabel">Select Your Age</label>
+  <select id="age">
+    <option value="5">5 Years</option>
+    <option value="6">6 Years</option>
+    <option value="7">7 Years</option>
+    <option value="8">8 Years</option>
+  </select>
+
+  <br><br>
+  <h2 id="choose">🎮 Choose Your Game</h2>
+
+  <div class="menu">
+    <button class="game-btn add" onclick="startGame('add')">
+      <span>➕</span><span id="addText">Addition</span>
+    </button>
+
+    <button class="game-btn sub" onclick="startGame('sub')">
+      <span>➖</span><span id="subText">Subtraction</span>
+    </button>
+
+    <button class="game-btn mul" onclick="startGame('mul')">
+      <span>✖️</span><span id="mulText">Multiplication</span>
+    </button>
+
+    <button class="game-btn div" onclick="startGame('div')">
+      <span>➗</span><span id="divText">Division</span>
+    </button>
+  </div>
+</section>
+
+<section class="card hidden" id="quiz">
+  <div class="quiz-top">
+    <span id="questionCount">Question 1/10</span>
+    <span id="scoreText">⭐ Score: 0</span>
+  </div>
+
+  <div class="progress">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="question" id="question">5 + 3 = ?</div>
+
+  <div class="options" id="options"></div>
+
+  <div class="feedback" id="feedback"></div>
+
+  <button class="main-btn hidden" id="nextBtn" onclick="nextQuestion()">
+    Next Question ➜
+  </button>
+</section>
+
+<section class="card hidden result" id="result">
+  <div class="big" id="resultEmoji">🏆</div>
+  <h2 id="resultTitle">Amazing Work!</h2>
+  <p id="resultMessage">You completed the quiz!</p>
+
+  <div class="score" id="finalScore">Score: 10/10</div>
+  <div style="font-size:30px" id="stars">⭐⭐⭐⭐⭐</div>
+
+  <button class="main-btn" onclick="goHome()" id="homeBtn">
+    🏠 Home
+  </button>
+</section>
+
+</main>
+
+<footer>
+  <p>💜 Math Masti World</p>
+  <p id="footerText">Made with Love for Little Learners</p>
+</footer>
+
+<script>
+let hindi = false;
+let operation = "add";
+let questions = [];
+let current = 0;
+let score = 0;
+let answered = false;
+
+const words = {
+  en: {
+    tagline:"Learn Mathematics with Fun!",
+    welcome:"👋 Welcome, Little Champion!",
+    intro:"Let's make Mathematics easy and exciting!",
+    age:"Select Your Age",
+    choose:"🎮 Choose Your Game",
+    add:"Addition",
+    sub:"Subtraction",
+    mul:"Multiplication",
+    div:"Division",
+    next:"Next Question ➜",
+    correct:"🎉 Correct Answer! Well Done!",
+    wrong:"❌ Oops! Try the next one!",
+    title:"Amazing Work!",
+    message:"You completed the quiz!",
+    home:"🏠 Home",
+    footer:"Made with Love for Little Learners",
+    score:"Score",
+    question:"Question",
+    perfect:"🌟 Perfect Score!",
+    good:"👏 Great Job!",
+    practice:"💪 Keep Practicing!",
+    final:"Your Final Score"
+  },
+  hi: {
+    tagline:"खेल-खेल में गणित सीखें!",
+    welcome:"👋 स्वागत है छोटे चैंपियन!",
+    intro:"आइए गणित को आसान और मजेदार बनाएं!",
+    age:"अपनी उम्र चुनें",
+    choose:"🎮 अपना गेम चुनें",
+    add:"जोड़",
+    sub:"घटाव",
+    mul:"गुणा",
+    div:"भाग",
+    next:"अगला सवाल ➜",
+    correct:"🎉 सही जवाब! बहुत बढ़िया!",
+    wrong:"❌ गलत जवाब! अगला सवाल करें!",
+    title:"शानदार प्रदर्शन!",
+    message:"आपने क्विज पूरा कर लिया!",
+    home:"🏠 होम",
+    footer:"छोटे बच्चों के लिए प्यार से बनाया गया",
+    score:"स्कोर",
+    question:"सवाल",
+    perfect:"🌟 शानदार! पूरे नंबर!",
+    good:"👏 बहुत अच्छा!",
+    practice:"💪 अभ्यास करते रहिए!",
+    final:"आपका अंतिम स्कोर"
+  }
+};
+
+function toggleLanguage() {
+  hindi = !hindi;
+  const w = hindi ? words.hi : words.en;
+
+  document.getElementById("langBtn").textContent =
+    hindi ? "English" : "हिंदी";
+
+  document.getElementById("tagline").textContent = w.tagline;
+  document.getElementById("welcome").textContent = w.welcome;
+  document.getElementById("intro").textContent = w.intro;
+  document.getElementById("ageLabel").textContent = w.age;
+  document.getElementById("choose").textContent = w.choose;
+  document.getElementById("addText").textContent = w.add;
+  document.getElementById("subText").textContent = w.sub;
+  document.getElementById("mulText").textContent = w.mul;
+  document.getElementById("divText").textContent = w.div;
+  document.getElementById("footerText").textContent = w.footer;
+  document.getElementById("nextBtn").textContent = w.next;
+  document.getElementById("homeBtn").textContent = w.home;
+
+  if (!document.getElementById("quiz").classList.contains("hidden")) {
+    showQuestion();
+  }
+
+  if (!document.getElementById("result").classList.contains("hidden")) {
+    showResult();
+  }
+}
+
+function startGame(op) {
+  operation = op;
+  current = 0;
+  score = 0;
+  questions = [];
+
+  let age = Number(document.getElementById("age").value);
+  let max = age === 5 ? 10 : age === 6 ? 15 : age === 7 ? 20 : 30;
+
+  for(let i=0; i<10; i++) {
+    let a, b, answer, symbol;
+
+    if(op === "add") {
+      a = random(1,max);
+      b = random(1,max);
+      answer = a+b;
+      symbol = "+";
+    }
+    else if(op === "sub") {
+      a = random(1,max);
+      b = random(1,a);
+      answer = a-b;
+      symbol = "−";
+    }
+    else if(op === "mul") {
+      a = random(1,Math.min(10,age+2));
+      b = random(1,10);
+      answer = a*b;
+      symbol = "×";
+    }
+    else {
+      b = random(1,Math.min(10,age+2));
+      answer = random(1,10);
+      a = b*answer;
+      symbol = "÷";
+    }
+
+    let opts = new Set([answer]);
+
+    while(opts.size < 4) {
+      let wrong = answer + random(-10,10);
+      if(wrong >= 0 && wrong !== answer) opts.add(wrong);
+    }
+
+    let options = [...opts].sort(()=>Math.random()-.5);
+
+    questions.push({
+      text: a+" "+symbol+" "+b+" = ?",
+      answer,
+      options
+    });
+  }
+
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+
+  showQuestion();
+}
+
+function random(min,max) {
+  return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function showQuestion() {
+  answered = false;
+  let q = questions[current];
+  let w = hindi ? words.hi : words.en;
+
+  document.getElementById("questionCount").textContent =
+    w.question+" "+(current+1)+"/10";
+
+  document.getElementById("scoreText").textContent =
+    "⭐ "+w.score+": "+score;
+
+  document.getElementById("progressBar").style.width =
+    (current*10)+"%";
+
+  document.getElementById("question").textContent = q.text;
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("nextBtn").classList.add("hidden");
+
+  let box = document.getElementById("options");
+  box.innerHTML = "";
+
+  q.options.forEach(num => {
+    let btn = document.createElement("button");
+    btn.className = "option";
+    btn.textContent = num;
+    btn.onclick = () => checkAnswer(num,btn);
+    box.appendChild(btn);
+  });
+}
+
+function checkAnswer(value,btn) {
+  if(answered) return;
+  answered = true;
+
+  let q = questions[current];
+  let w = hindi ? words.hi : words.en;
+  let buttons = document.querySelectorAll(".option");
+
+  buttons.forEach(b => {
+    b.disabled = true;
+    if(Number(b.textContent) === q.answer) {
+      b.classList.add("correct");
+    }
+  });
+
+  if(value === q.answer) {
+    score++;
+    document.getElementById("feedback").textContent = w.correct;
+  } else {
+    btn.classList.add("wrong");
+    document.getElementById("feedback").textContent = w.wrong;
+  }
+
+  document.getElementById("scoreText").textContent =
+    "⭐ "+w.score+": "+score;
+
+  document.getElementById("nextBtn").classList.remove("hidden");
+  document.getElementById("progressBar").style.width =
+    ((current+1)*10)+"%";
+}
+
+function nextQuestion() {
+  current++;
+
+  if(current < 10) {
+    showQuestion();
+  } else {
+    document.getElementById("quiz").classList.add("hidden");
+    document.getElementById("result").classList.remove("hidden");
+    showResult();
+  }
+}
+
+function showResult() {
+  let w = hindi ? words.hi : words.en;
+
+  document.getElementById("resultTitle").textContent = w.title;
+  document.getElementById("resultMessage").textContent = w.message;
+  document.getElementById("finalScore").textContent =
+    w.final+": "+score+"/10";
+
+  document.getElementById("resultEmoji").textContent =
+    score===10 ? "🏆" : score>=7 ? "🥳" : score>=4 ? "😊" : "💪";
+
+  document.getElementById("stars").textContent =
+    "⭐".repeat(Math.max(1,Math.ceil(score/2)));
+
+  document.getElementById("resultMessage").textContent =
+    score===10 ? w.perfect :
+    score>=7 ? w.good : w.practice;
+}
+
+function goHome() {
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("home").classList.remove("hidden");
+}
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .catch(error => console.log("Service Worker:",error));
+  });
+}
+</script>
+
+</body>
+</html>
