@@ -1,15 +1,21 @@
 
 {
-  "id": "./",
   "name": "Math Masti World",
   "short_name": "Math Masti",
-  "start_url": "./index.html",
+  "description": "Fun Mathematics Learning App for Kids",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff",
-  "theme_color": "#4CAF50",
+  "theme_color": "#1565C0",
   "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
     {
       "src": "./icon-512.png",
       "sizes": "512x512",
