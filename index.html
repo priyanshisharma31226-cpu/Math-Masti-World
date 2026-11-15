@@ -6,31 +6,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#6848df">
 <title>Math Masti World</title>
-
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#f4f1ff;color:#29234b}
 header{background:linear-gradient(135deg,#7049e8,#a46af4);color:white;text-align:center;padding:24px 12px;border-radius:0 0 28px 28px}
 header h1{margin:5px;font-size:29px}
-header p{margin:8px}
 main{max-width:650px;margin:auto;padding:18px}
 .card{background:white;padding:22px;margin:15px 0;border-radius:20px;box-shadow:0 5px 18px #33227715;text-align:center}
 h2{color:#6848df}
 button{border:0;border-radius:13px;padding:14px 18px;margin:7px;background:#7049e8;color:white;font-size:16px;font-weight:bold;cursor:pointer}
-button:active{transform:scale(.97)}
+button:disabled{opacity:.5;cursor:not-allowed}
 .secondary{background:#eee9ff;color:#5839b9}
 .games{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .game{background:#f1edff;color:#5034a8;padding:22px 8px;border-radius:17px;font-size:17px}
 .hidden{display:none!important}
-input{padding:13px;border:2px solid #ddd;border-radius:10px;font-size:19px;width:100%;text-align:center}
+.stat{display:inline-block;background:#f1edff;padding:12px;border-radius:12px;margin:5px;font-weight:bold}
 #question{font-size:34px;font-weight:bold;margin:20px}
 #answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 #answers button{background:#eee9ff;color:#5839b9}
-.stat{display:inline-block;background:#f1edff;padding:12px;border-radius:12px;margin:5px;font-weight:bold}
+#feedback{font-size:18px;font-weight:bold;line-height:1.5}
+.good{color:#168b48}
+.bad{color:#d93636}
 footer{text-align:center;color:#888;padding:20px;font-size:13px}
 </style>
 </head>
-
 <body>
 
 <header>
@@ -64,9 +63,8 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 <h2 id="welcome">🏆 My Dashboard</h2>
 <div class="stat">⭐ <span id="stars">0</span></div>
 <div class="stat">🎯 <span id="score">0</span> Points</div>
-<p id="level">Ready to learn?</p>
+<p>Ready to learn?</p>
 </div>
-
 <div class="card">
 <h2 id="gameTitle">Choose Your Math Game</h2>
 <div class="games">
@@ -82,10 +80,11 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 
 <section id="game" class="card hidden">
 <h2 id="gameHeading">Math Game</h2>
-<div id="question">5 + 3 = ?</div>
+<div id="question"></div>
 <div id="answers"></div>
 <p id="feedback"></p>
 <p>Question: <span id="number">1</span>/10</p>
+<div id="retryArea"></div>
 <button class="secondary" onclick="goDashboard()">🏠 Dashboard</button>
 </section>
 
@@ -103,6 +102,7 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 <script>
 let lang='en',age=6,points=0,stars=0;
 let type='add',q=0,correct=0,answer=0;
+let a=0,b=0,symbol='+',attempted=false;
 
 function show(id){
 document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
@@ -116,8 +116,8 @@ document.getElementById('ageTitle').innerText=
 l==='hi'?'अपनी उम्र चुनें 🎂':'Choose Your Age 🎂';
 }
 
-function setAge(a){
-age=a;
+function setAge(n){
+age=n;
 show('dashboard');
 document.getElementById('welcome').innerText=
 lang==='hi'?'🏆 मेरा डैशबोर्ड':'🏆 My Dashboard';
@@ -128,39 +128,47 @@ updateStats();
 
 function startGame(t){
 type=t;q=0;correct=0;
-show('game');
 document.getElementById('gameHeading').innerText=
 t==='challenge'?'🔥 Math Challenge':'Math Practice';
+show('game');
 nextQuestion();
 }
 
 function nextQuestion(){
-if(q>=10){
-finishGame();
-return;
-}
+if(q>=10){finishGame();return;}
 q++;
-let max=age===3?10:age===6?30:100;
-let a=Math.floor(Math.random()*max)+1;
-let b=Math.floor(Math.random()*max)+1;
-let symbol='+';
+attempted=false;
 
-if(type==='sub'){if(b>a)[a,b]=[b,a];symbol='-';answer=a-b;}
-else if(type==='mul'){b=Math.floor(Math.random()*10)+1;symbol='×';answer=a*b;}
-else if(type==='div'){
+let max=age===3?10:age===6?30:100;
+a=Math.floor(Math.random()*max)+1;
+b=Math.floor(Math.random()*max)+1;
+symbol='+';
+
+if(type==='sub'){
+if(b>a)[a,b]=[b,a];
+symbol='−';answer=a-b;
+}else if(type==='mul'){
+b=Math.floor(Math.random()*10)+1;
+symbol='×';answer=a*b;
+}else if(type==='div'){
 b=Math.floor(Math.random()*9)+1;
 a=b*(Math.floor(Math.random()*10)+1);
 symbol='÷';answer=a/b;
+}else{
+answer=a+b;
 }
-else {answer=a+b;}
 
 if(type==='add'||type==='challenge')answer=a+b;
-if(type==='sub')answer=a-b;
 
 document.getElementById('question').innerText=
 a+' '+symbol+' '+b+' = ?';
 document.getElementById('number').innerText=q;
+document.getElementById('feedback').innerText='';
+document.getElementById('retryArea').innerHTML='';
+renderAnswers();
+}
 
+function renderAnswers(){
 let choices=[answer];
 while(choices.length<4){
 let wrong=answer+Math.floor(Math.random()*11)-5;
@@ -176,39 +184,58 @@ btn.innerText=v;
 btn.onclick=()=>checkAnswer(v);
 box.appendChild(btn);
 });
-document.getElementById('feedback').innerText='';
 }
 
 function checkAnswer(v){
-let box=document.getElementById('answers');
-if(box.dataset.done==='yes')return;
-box.dataset.done='yes';
+if(attempted)return;
 
+let box=document.getElementById('answers');
 if(v===answer){
-correct++;points+=10;stars++;
-document.getElementById('feedback').innerText=
-lang==='hi'?'🎉 बहुत खूब! सही जवाब!':'🎉 Excellent! Correct!';
-}else{
-document.getElementById('feedback').innerText=
-(lang==='hi'?'सही जवाब: ':'Correct answer: ')+answer;
-}
+attempted=true;
+correct++;
+points+=10;
+stars++;
 updateStats();
-setTimeout(()=>{
-box.dataset.done='no';
-nextQuestion();
-},900);
+
+document.getElementById('feedback').className='good';
+document.getElementById('feedback').innerText=
+lang==='hi'?'🎉 बहुत खूब! आपका जवाब सही है!':'🎉 Excellent! Your answer is correct!';
+
+box.innerHTML='';
+document.getElementById('retryArea').innerHTML=
+'<button onclick="nextQuestion()">Next Question ➡️</button>';
+}else{
+document.getElementById('feedback').className='bad';
+document.getElementById('feedback').innerText=
+lang==='hi'
+?'❌ गलत जवाब! सही उत्तर: '+answer+
+'\nइसे समझकर फिर कोशिश करें।'
+:'❌ Incorrect! Correct answer: '+answer+
+'\nUnderstand it and try again!';
+
+box.innerHTML='';
+document.getElementById('retryArea').innerHTML=
+'<button onclick="tryAgain()">🔄 Try Again</button>';
+}
+}
+
+function tryAgain(){
+document.getElementById('feedback').innerText='';
+document.getElementById('retryArea').innerHTML='';
+attempted=false;
+renderAnswers();
 }
 
 function finishGame(){
-points+=correct*5;
-updateStats();
 document.getElementById('gameHeading').innerText='🏆 Game Completed!';
 document.getElementById('question').innerText=
 (lang==='hi'?'आपका स्कोर: ':'Your Score: ')+correct+'/10';
-document.getElementById('answers').innerHTML=
-'<button onclick="startGame(type)">Play Again 🔄</button>';
+document.getElementById('answers').innerHTML='';
+document.getElementById('feedback').className='good';
 document.getElementById('feedback').innerText=
 '⭐ '+correct+' Stars earned!';
+document.getElementById('retryArea').innerHTML=
+'<button onclick="startGame(type)">Play Again 🔄</button>';
 }
 
 function updateStats(){
