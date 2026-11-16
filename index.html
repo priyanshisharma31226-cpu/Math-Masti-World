@@ -3,35 +3,42 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#6848df">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#7049e8">
 <title>Math Masti World</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f4f1ff;color:#29234b}
-header{background:linear-gradient(135deg,#7049e8,#a46af4);color:white;text-align:center;padding:24px 12px;border-radius:0 0 28px 28px}
-header h1{margin:5px;font-size:29px}
+body{margin:0;background:#f4f1ff;color:#29234b;font-family:Arial,sans-serif}
+header{background:linear-gradient(135deg,#6844df,#a46af4);color:white;text-align:center;padding:28px 12px 35px;border-radius:0 0 32px 32px}
+header h1{font-size:30px;margin:10px 0}
+header p{font-size:17px}
 main{max-width:650px;margin:auto;padding:18px}
-.card{background:white;padding:22px;margin:15px 0;border-radius:20px;box-shadow:0 5px 18px #33227715;text-align:center}
+.card{background:white;border-radius:24px;padding:24px 18px;margin:16px 0;text-align:center;box-shadow:0 7px 25px #4835a018}
 h2{color:#6848df}
-button{border:0;border-radius:13px;padding:14px 18px;margin:7px;background:#7049e8;color:white;font-size:16px;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.5;cursor:not-allowed}
+button,select{border:0;border-radius:14px;padding:15px 18px;margin:7px;background:#7049e8;color:white;font-size:16px;font-weight:bold;cursor:pointer}
+button:active{transform:scale(.97)}
 .secondary{background:#eee9ff;color:#5839b9}
-.games{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.game{background:#f1edff;color:#5034a8;padding:22px 8px;border-radius:17px;font-size:17px}
+.games{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.game{background:#f0ebff;color:#5034a8;min-height:85px}
+.game span{display:block;font-size:25px;margin-bottom:7px}
 .hidden{display:none!important}
-.stat{display:inline-block;background:#f1edff;padding:12px;border-radius:12px;margin:5px;font-weight:bold}
-#question{font-size:34px;font-weight:bold;margin:20px}
+.stat{display:inline-block;background:#f0ebff;padding:13px 18px;border-radius:15px;margin:5px;font-weight:bold}
+#question{font-size:36px;font-weight:bold;margin:25px 0;color:#5034a8}
 #answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-#answers button{background:#eee9ff;color:#5839b9}
-#feedback{font-size:18px;font-weight:bold;line-height:1.5}
+#answers button{background:#eee9ff;color:#5839b9;font-size:22px}
+#answers button:disabled{opacity:.65}
+#feedback{font-weight:bold;min-height:28px;line-height:1.5}
 .good{color:#168b48}
 .bad{color:#d93636}
-footer{text-align:center;color:#888;padding:20px;font-size:13px}
+.progressbar{height:12px;background:#eee9ff;border-radius:20px;overflow:hidden}
+#progressFill{height:100%;width:0;background:#7049e8;transition:.3s}
+footer{text-align:center;color:#999;padding:25px}
+select{background:#eee9ff;color:#5034a8;width:90%}
+.big{font-size:48px}
+@media(max-width:380px){header h1{font-size:25px}#question{font-size:30px}}
 </style>
 </head>
 <body>
-
 <header>
 <h1>🌈 Math Masti World</h1>
 <p>Learn • Play • Enjoy Mathematics!</p>
@@ -40,8 +47,8 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 <main>
 
 <section id="home" class="card">
-<h2>Welcome, Little Champion! 🎉</h2>
-<p>Let's make Mathematics fun!</p>
+<h2 style="font-size:30px">Welcome, Little Champion! 🎉</h2>
+<p style="font-size:19px">Let's make Mathematics fun!</p>
 <button onclick="show('language')">Let's Start 🚀</button>
 </section>
 
@@ -61,52 +68,84 @@ footer{text-align:center;color:#888;padding:20px;font-size:13px}
 <section id="dashboard" class="hidden">
 <div class="card">
 <h2 id="welcome">🏆 My Dashboard</h2>
-<div class="stat">⭐ <span id="stars">0</span></div>
-<div class="stat">🎯 <span id="score">0</span> Points</div>
-<p>Ready to learn?</p>
+<div class="stat">⭐ <span id="stars">0</span><br>Stars</div>
+<div class="stat">🎯 <span id="score">0</span><br>Points</div>
+<div class="stat">🏅 <span id="best">0</span><br>Best Score</div>
+<p id="ready">Ready to learn?</p>
 </div>
 <div class="card">
 <h2 id="gameTitle">Choose Your Math Game</h2>
 <div class="games">
-<button class="game" onclick="startGame('add')">➕ Addition</button>
-<button class="game" onclick="startGame('sub')">➖ Subtraction</button>
-<button class="game" onclick="startGame('mul')">✖️ Multiplication</button>
-<button class="game" onclick="startGame('div')">➗ Division</button>
-<button class="game" onclick="startGame('challenge')">🔥 Math Challenge</button>
-<button class="game" onclick="showProgress()">📊 My Progress</button>
+<button class="game" onclick="startGame('add')"><span>➕</span>Addition</button>
+<button class="game" onclick="startGame('sub')"><span>➖</span>Subtraction</button>
+<button class="game" onclick="startGame('mul')"><span>✖️</span>Multiplication</button>
+<button class="game" onclick="startGame('div')"><span>➗</span>Division</button>
+<button class="game" onclick="startGame('challenge')"><span>🔥</span>Math Challenge</button>
+<button class="game" onclick="showProgress()"><span>📊</span>My Progress</button>
 </div>
 </div>
+<button class="secondary" onclick="show('language')">🌍 Change Language</button>
 </section>
 
 <section id="game" class="card hidden">
 <h2 id="gameHeading">Math Game</h2>
-<div id="question"></div>
+<div class="progressbar"><div id="progressFill"></div></div>
+<p>Question <span id="number">1</span>/10</p>
+<div id="question">5 + 3 = ?</div>
 <div id="answers"></div>
 <p id="feedback"></p>
-<p>Question: <span id="number">1</span>/10</p>
 <div id="retryArea"></div>
 <button class="secondary" onclick="goDashboard()">🏠 Dashboard</button>
 </section>
 
+<section id="result" class="card hidden">
+<div class="big">🏆</div>
+<h2 id="resultTitle">Amazing Work!</h2>
+<h1 id="finalScore">10/10</h1>
+<h2 id="finalStars">⭐⭐⭐</h2>
+<p id="resultMessage">You are a Math Champion!</p>
+<button onclick="startGame(type)">🔄 Play Again</button>
+<button class="secondary" onclick="goDashboard()">🏠 Dashboard</button>
+</section>
+
 <section id="progress" class="card hidden">
-<h2>🏆 My Progress</h2>
+<div class="big">📊</div>
+<h2 id="progressTitle">My Progress</h2>
 <p>Total Points: <b id="totalPoints">0</b></p>
 <p>Total Stars: <b id="totalStars">0</b></p>
+<p>Best Score: <b id="totalBest">0</b>/10</p>
 <button onclick="goDashboard()">Back to Dashboard</button>
 </section>
 
 </main>
 
-<footer>🌈 Math Masti World | Learn with Fun!</footer>
+<footer>🌈 Math Masti World | Learn with Fun!<br>Made with ❤️ for Little Learners<br>© 2026</footer>
 
 <script>
-let lang='en',age=6,points=0,stars=0;
+let lang='en',age=6,points=0,stars=0,best=0;
 let type='add',q=0,correct=0,answer=0;
 let a=0,b=0,symbol='+',attempted=false;
+
+function loadData(){
+try{
+let d=JSON.parse(localStorage.getItem('mathMastiData'))||{};
+points=d.points||0;
+stars=d.stars||0;
+best=d.best||0;
+}catch(e){}
+updateStats();
+}
+
+function saveData(){
+localStorage.setItem('mathMastiData',JSON.stringify({
+points:points,stars:stars,best:best
+}));
+}
 
 function show(id){
 document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
 document.getElementById(id).classList.remove('hidden');
+window.scrollTo(0,0);
 }
 
 function setLanguage(l){
@@ -119,26 +158,46 @@ l==='hi'?'अपनी उम्र चुनें 🎂':'Choose Your Age 🎂'
 function setAge(n){
 age=n;
 show('dashboard');
-document.getElementById('welcome').innerText=
-lang==='hi'?'🏆 मेरा डैशबोर्ड':'🏆 My Dashboard';
-document.getElementById('gameTitle').innerText=
-lang==='hi'?'अपना गणित खेल चुनें':'Choose Your Math Game';
+updateLanguage();
 updateStats();
+}
+
+function updateLanguage(){
+let hi=lang==='hi';
+document.getElementById('welcome').innerText=hi?'🏆 मेरा डैशबोर्ड':'🏆 My Dashboard';
+document.getElementById('gameTitle').innerText=hi?'अपना गणित खेल चुनें':'Choose Your Math Game';
+document.getElementById('ready').innerText=hi?'सीखने के लिए तैयार हैं?':'Ready to learn?';
+}
+
+function updateStats(){
+document.getElementById('stars').innerText=stars;
+document.getElementById('score').innerText=points;
+document.getElementById('best').innerText=best;
 }
 
 function startGame(t){
 type=t;q=0;correct=0;
 document.getElementById('gameHeading').innerText=
-t==='challenge'?'🔥 Math Challenge':'Math Practice';
+(lang==='hi'?'गणित खेल: ':'Math Game: ')+gameName(t);
 show('game');
 nextQuestion();
+}
+
+function gameName(t){
+let names={
+add:lang==='hi'?'जोड़':'Addition',
+sub:lang==='hi'?'घटाव':'Subtraction',
+mul:lang==='hi'?'गुणा':'Multiplication',
+div:lang==='hi'?'भाग':'Division',
+challenge:lang==='hi'?'महाचुनौती':'Math Challenge'
+};
+return names[t];
 }
 
 function nextQuestion(){
 if(q>=10){finishGame();return;}
 q++;
 attempted=false;
-
 let max=age===3?10:age===6?30:100;
 a=Math.floor(Math.random()*max)+1;
 b=Math.floor(Math.random()*max)+1;
@@ -154,102 +213,97 @@ symbol='×';answer=a*b;
 b=Math.floor(Math.random()*9)+1;
 a=b*(Math.floor(Math.random()*10)+1);
 symbol='÷';answer=a/b;
-}else{
-answer=a+b;
-}
+}else if(type==='challenge'){
+let op=['add','sub','mul','div'][Math.floor(Math.random()*4)];
+if(op==='sub'){if(b>a)[a,b]=[b,a];symbol='−';answer=a-b;}
+else if(op==='mul'){b=Math.floor(Math.random()*10)+1;symbol='×';answer=a*b;}
+else if(op==='div'){b=Math.floor(Math.random()*9)+1;a=b*(Math.floor(Math.random()*10)+1);symbol='÷';answer=a/b;}
+else{symbol='+';answer=a+b;}
+}else{answer=a+b;}
 
-if(type==='add'||type==='challenge')answer=a+b;
-
-document.getElementById('question').innerText=
-a+' '+symbol+' '+b+' = ?';
+document.getElementById('question').innerText=a+' '+symbol+' '+b+' = ?';
 document.getElementById('number').innerText=q;
+document.getElementById('progressFill').style.width=(q*10)+'%';
 document.getElementById('feedback').innerText='';
+document.getElementById('feedback').className='';
 document.getElementById('retryArea').innerHTML='';
 renderAnswers();
 }
 
 function renderAnswers(){
 let choices=[answer];
-while(choices.length<4){
+let attempts=0;
+while(choices.length<4&&attempts<100){
+attempts++;
 let wrong=answer+Math.floor(Math.random()*11)-5;
 if(wrong>=0&&!choices.includes(wrong))choices.push(wrong);
 }
+while(choices.length<4)choices.push(answer+choices.length+5);
 choices.sort(()=>Math.random()-.5);
-
 let box=document.getElementById('answers');
 box.innerHTML='';
 choices.forEach(v=>{
 let btn=document.createElement('button');
 btn.innerText=v;
-btn.onclick=()=>checkAnswer(v);
+btn.onclick=()=>checkAnswer(v,btn);
 box.appendChild(btn);
 });
 }
 
-function checkAnswer(v){
+function checkAnswer(v,btn){
 if(attempted)return;
-
 let box=document.getElementById('answers');
 if(v===answer){
 attempted=true;
 correct++;
 points+=10;
 stars++;
+saveData();
 updateStats();
-
 document.getElementById('feedback').className='good';
 document.getElementById('feedback').innerText=
-lang==='hi'?'🎉 बहुत खूब! आपका जवाब सही है!':'🎉 Excellent! Your answer is correct!';
-
-box.innerHTML='';
+lang==='hi'?'🎉 बहुत खूब! सही जवाब!':'🎉 Excellent! Correct Answer!';
+box.querySelectorAll('button').forEach(b=>b.disabled=true);
+btn.style.background='#c9f3d8';
 document.getElementById('retryArea').innerHTML=
-'<button onclick="nextQuestion()">Next Question ➡️</button>';
+'<button onclick="nextQuestion()">'+
+(lang==='hi'?'अगला सवाल ➡️':'Next Question ➡️')+'</button>';
 }else{
 document.getElementById('feedback').className='bad';
 document.getElementById('feedback').innerText=
-lang==='hi'
-?'❌ गलत जवाब! सही उत्तर: '+answer+
-'\nइसे समझकर फिर कोशिश करें।'
-:'❌ Incorrect! Correct answer: '+answer+
-'\nUnderstand it and try again!';
-
-box.innerHTML='';
-document.getElementById('retryArea').innerHTML=
-'<button onclick="tryAgain()">🔄 Try Again</button>';
+lang==='hi'?'❌ गलत जवाब! फिर कोशिश करें।':'❌ Not quite! Try again.';
+btn.disabled=true;
 }
-}
-
-function tryAgain(){
-document.getElementById('feedback').innerText='';
-document.getElementById('retryArea').innerHTML='';
-attempted=false;
-renderAnswers();
 }
 
 function finishGame(){
-document.getElementById('gameHeading').innerText='🏆 Game Completed!';
-document.getElementById('question').innerText=
-(lang==='hi'?'आपका स्कोर: ':'Your Score: ')+correct+'/10';
-document.getElementById('answers').innerHTML='';
-document.getElementById('feedback').className='good';
-document.getElementById('feedback').innerText=
-'⭐ '+correct+' Stars earned!';
-document.getElementById('retryArea').innerHTML=
-'<button onclick="startGame(type)">Play Again 🔄</button>';
+best=Math.max(best,correct);
+saveData();
+updateStats();
+show('result');
+document.getElementById('resultTitle').innerText=
+lang==='hi'?'शानदार प्रदर्शन!':'Amazing Work!';
+document.getElementById('finalScore').innerText=correct+'/10';
+document.getElementById('finalStars').innerText='⭐'.repeat(Math.max(1,Math.ceil(correct/2)));
+document.getElementById('resultMessage').innerText=
+lang==='hi'?'आप गणित के चैंपियन हैं!':'You are a Math Champion!';
 }
-
-function updateStats(){
-document.getElementById('stars').innerText=stars;
-document.getElementById('score').innerText=points;
-}
-
-function goDashboard(){show('dashboard');}
 
 function showProgress(){
 document.getElementById('totalPoints').innerText=points;
 document.getElementById('totalStars').innerText=stars;
+document.getElementById('totalBest').innerText=best;
+document.getElementById('progressTitle').innerText=
+lang==='hi'?'मेरी प्रगति':'My Progress';
 show('progress');
 }
+
+function goDashboard(){
+show('dashboard');
+updateStats();
+}
+
+loadData();
 </script>
 </body>
 </html>
