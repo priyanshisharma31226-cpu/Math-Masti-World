@@ -5,7 +5,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#7049e8">
+<meta name="description" content="Math Masti World - Fun Mathematics Learning App for Kids">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
 <title>Math Masti World</title>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f4f1ff;color:#29234b;font-family:Arial,sans-serif}
@@ -15,9 +20,10 @@ header p{font-size:17px}
 main{max-width:650px;margin:auto;padding:18px}
 .card{background:white;border-radius:24px;padding:24px 18px;margin:16px 0;text-align:center;box-shadow:0 7px 25px #4835a018}
 h2{color:#6848df}
-button,select{border:0;border-radius:14px;padding:15px 18px;margin:7px;background:#7049e8;color:white;font-size:16px;font-weight:bold;cursor:pointer}
+button{border:0;border-radius:14px;padding:15px 18px;margin:7px;background:#7049e8;color:white;font-size:16px;font-weight:bold;cursor:pointer}
 button:active{transform:scale(.97)}
 .secondary{background:#eee9ff;color:#5839b9}
+.install-btn{background:linear-gradient(135deg,#ff8a34,#ff5e62);color:white;width:90%;max-width:300px}
 .games{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .game{background:#f0ebff;color:#5034a8;min-height:85px}
 .game span{display:block;font-size:25px;margin-bottom:7px}
@@ -33,15 +39,18 @@ button:active{transform:scale(.97)}
 .progressbar{height:12px;background:#eee9ff;border-radius:20px;overflow:hidden}
 #progressFill{height:100%;width:0;background:#7049e8;transition:.3s}
 footer{text-align:center;color:#999;padding:25px}
-select{background:#eee9ff;color:#5034a8;width:90%}
 .big{font-size:48px}
 @media(max-width:380px){header h1{font-size:25px}#question{font-size:30px}}
 </style>
 </head>
+
 <body>
+
 <header>
 <h1>🌈 Math Masti World</h1>
 <p>Learn • Play • Enjoy Mathematics!</p>
+<button id="installBtn" class="install-btn hidden">📲 Install App</button>
+<p id="installMessage" style="font-size:13px;margin:5px"></p>
 </header>
 
 <main>
@@ -73,6 +82,7 @@ select{background:#eee9ff;color:#5034a8;width:90%}
 <div class="stat">🏅 <span id="best">0</span><br>Best Score</div>
 <p id="ready">Ready to learn?</p>
 </div>
+
 <div class="card">
 <h2 id="gameTitle">Choose Your Math Game</h2>
 <div class="games">
@@ -84,6 +94,7 @@ select{background:#eee9ff;color:#5034a8;width:90%}
 <button class="game" onclick="showProgress()"><span>📊</span>My Progress</button>
 </div>
 </div>
+
 <button class="secondary" onclick="show('language')">🌍 Change Language</button>
 </section>
 
@@ -119,7 +130,11 @@ select{background:#eee9ff;color:#5034a8;width:90%}
 
 </main>
 
-<footer>🌈 Math Masti World | Learn with Fun!<br>Made with ❤️ for Little Learners<br>© 2026</footer>
+<footer>
+🌈 Math Masti World | Learn with Fun!<br>
+Made with ❤️ for Little Learners<br>
+© 2026
+</footer>
 
 <script>
 let lang='en',age=6,points=0,stars=0,best=0;
@@ -137,9 +152,11 @@ updateStats();
 }
 
 function saveData(){
+try{
 localStorage.setItem('mathMastiData',JSON.stringify({
 points:points,stars:stars,best:best
 }));
+}catch(e){}
 }
 
 function show(id){
@@ -304,6 +321,49 @@ updateStats();
 }
 
 loadData();
+
+/* PWA SERVICE WORKER REGISTRATION */
+if('serviceWorker' in navigator){
+window.addEventListener('load',()=>{
+navigator.serviceWorker.register('./service%20worker.js')
+.then(()=>console.log('Math Masti World: Offline support ready'))
+.catch(error=>console.error('Service Worker Error:',error));
+});
+}
+
+/* APP INSTALL FEATURE */
+let deferredPrompt=null;
+const installBtn=document.getElementById('installBtn');
+const installMessage=document.getElementById('installMessage');
+
+window.addEventListener('beforeinstallprompt',event=>{
+event.preventDefault();
+deferredPrompt=event;
+installBtn.classList.remove('hidden');
+installMessage.innerText='Install Math Masti World on your phone!';
+});
+
+installBtn.addEventListener('click',async()=>{
+if(!deferredPrompt){
+installMessage.innerText='Please use your browser menu to install this app.';
+return;
+}
+deferredPrompt.prompt();
+const choice=await deferredPrompt.userChoice;
+if(choice.outcome==='accepted'){
+installMessage.innerText='Thank you! Enjoy Math Masti World!';
+installBtn.classList.add('hidden');
+}else{
+installMessage.innerText='You can install the app anytime.';
+}
+deferredPrompt=null;
+});
+
+window.addEventListener('appinstalled',()=>{
+installBtn.classList.add('hidden');
+installMessage.innerText='Math Masti World installed successfully! 🎉';
+});
 </script>
+
 </body>
 </html>
