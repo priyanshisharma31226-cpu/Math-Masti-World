@@ -1,28 +1,350 @@
 
-function speak(message){
-  if(!voiceOn || !('speechSynthesis' in window)) return;
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#7049e8">
+<title>Math Masti World</title>
 
-  try{
-    window.speechSynthesis.cancel();
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f1ff;color:#29234b}
+header{background:linear-gradient(135deg,#7049e8,#a16cf5);color:white;text-align:center;padding:24px 15px;border-radius:0 0 28px 28px}
+header h1{margin:0;font-size:29px}
+header p{margin:8px 0}
+.container{max-width:850px;margin:auto;padding:18px}
+.card{background:white;padding:20px;border-radius:20px;margin:15px 0;box-shadow:0 5px 18px #33205b12}
+h2{margin-top:0}
+button{border:0;border-radius:13px;padding:13px 18px;font-size:16px;font-weight:bold;cursor:pointer;margin:5px;background:#7049e8;color:white}
+button:disabled{opacity:.55;cursor:not-allowed}
+.operation-grid,.answer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.operation{background:#f0eaff;color:#482d91;padding:22px 10px;font-size:19px}
+.operation.selected{background:#7049e8;color:white}
+.primary{background:#7049e8;color:white}
+.secondary{background:#eee8ff;color:#482d91}
+.green{background:#159b68}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
+.stat{background:#f5f1ff;border-radius:14px;padding:15px 5px}
+.stat strong{display:block;font-size:24px;color:#7049e8}
+.stat span{font-size:13px}
+.question{text-align:center;font-size:38px;font-weight:bold;padding:25px 5px;color:#4d3198}
+.answer-option{background:#f0eaff;color:#482d91;font-size:23px;padding:18px}
+.answer-option.correct{background:#d9f8e8;color:#087a45}
+.answer-option.incorrect{background:#ffe1e1;color:#bd3030}
+#feedback{text-align:center;font-size:19px;font-weight:bold;min-height:35px;margin:15px 0}
+.progress-bg{background:#e8e1f7;height:12px;border-radius:20px;overflow:hidden}
+#progressBar{background:linear-gradient(90deg,#7049e8,#c17cff);height:100%;width:0%;transition:.3s}
+.hidden{display:none!important}
+.center{text-align:center}
+input,select{width:100%;padding:14px;border:2px solid #ddd3f8;border-radius:12px;font-size:18px;margin:10px 0}
+footer{text-align:center;color:#81799b;padding:20px}
+.small{font-size:13px;color:#777}
+#soundButton{background:white;color:#7049e8}
+@media(max-width:480px){header h1{font-size:25px}.container{padding:12px}.card{padding:16px}.question{font-size:32px}}
+</style>
+</head>
 
-    let utterance = new SpeechSynthesisUtterance(message);
-    let voice = chooseBestVoice();
+<body>
+<header>
+<h1>🌟 Math Masti World 🌟</h1>
+<p>खेल-खेल में गणित सीखें!</p>
+<button id="soundButton" onclick="toggleVoice()">🔊 आवाज़ चालू</button>
+</header>
 
-    if(voice){
-      utterance.voice = voice;
-      utterance.lang = voice.lang;
-    }else{
-      utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-IN';
-    }
+<main class="container">
 
-    // Funny Cartoon Voice Style
-    utterance.rate = lang === 'hi' ? 1.02 : 1.08;
-    utterance.pitch = 1.42;
-    utterance.volume = 1;
+<section id="dashboard">
+<div class="card center">
+<h2>नमस्ते Superstar! 👋</h2>
+<p>आज गणित में धमाल मचाने के लिए तैयार हो?</p>
+<div class="stats">
+<div class="stat"><strong id="totalPlayed">0</strong><span>कुल सवाल</span></div>
+<div class="stat"><strong id="totalCorrect">0</strong><span>सही जवाब</span></div>
+<div class="stat"><strong id="bestScore">0</strong><span>बेस्ट स्कोर</span></div>
+</div>
+</div>
 
-    window.speechSynthesis.speak(utterance);
+<div class="card">
+<h2>📚 अपना गणित चुनें</h2>
+<div class="operation-grid">
+<button class="operation selected" onclick="selectOperation('add',this)">➕ जोड़</button>
+<button class="operation" onclick="selectOperation('subtract',this)">➖ घटाव</button>
+<button class="operation" onclick="selectOperation('multiply',this)">✖️ गुणा</button>
+<button class="operation" onclick="selectOperation('divide',this)">➗ भाग</button>
+</div>
+</div>
 
-  }catch(e){
-    console.log('Cartoon voice error:',e);
-  }
+<div class="card">
+<h2>🎯 सवालों की संख्या</h2>
+<select id="questionCount">
+<option value="5">5 सवाल</option>
+<option value="10" selected>10 सवाल</option>
+<option value="15">15 सवाल</option>
+<option value="20">20 सवाल</option>
+</select>
+<button class="primary" style="width:100%;margin-top:15px" onclick="startQuiz()">🚀 खेल शुरू करें</button>
+</div>
+</section>
+
+<section id="quizScreen" class="hidden">
+<div class="card">
+<div style="display:flex;justify-content:space-between">
+<strong id="questionNumber">सवाल 1/10</strong>
+<strong>⭐ स्कोर: <span id="score">0</span></strong>
+</div>
+<div class="progress-bg" style="margin-top:14px"><div id="progressBar"></div></div>
+<div class="question" id="questionText"></div>
+<div class="answer-grid" id="answerGrid"></div>
+<div id="feedback"></div>
+<p class="center small" id="instruction">सही जवाब चुनें।</p>
+<button id="nextButton" class="green hidden" style="width:100%" onclick="nextQuestion()">अगला सवाल ➜</button>
+<button class="secondary" style="width:100%" onclick="goHome()">🏠 होम पर जाएँ</button>
+</div>
+</section>
+
+<section id="resultScreen" class="hidden">
+<div class="card center">
+<div style="font-size:65px">🏆</div>
+<h2>शानदार प्रदर्शन!</h2>
+<p>तुमने अपना क्विज पूरा कर लिया!</p>
+<div class="stats">
+<div class="stat"><strong id="finalScore">0</strong><span>स्कोर</span></div>
+<div class="stat"><strong id="finalCorrect">0</strong><span>सही जवाब</span></div>
+<div class="stat"><strong id="finalPercent">0%</strong><span>परिणाम</span></div>
+</div>
+<h2 id="resultMessage">बहुत खूब!</h2>
+<button class="primary" style="width:100%" onclick="startQuiz()">🔄 फिर से खेलें</button>
+<button class="secondary" style="width:100%" onclick="goHome()">🏠 होम पर जाएँ</button>
+</div>
+</section>
+
+</main>
+
+<footer>Made with ❤️ for little Math Champions<br>Math Masti World</footer>
+
+<script>
+/* HINDI VOICE */
+
+let voiceEnabled=true;
+let hindiVoice=null;
+
+function loadHindiVoice(){
+ if(!("speechSynthesis" in window))return;
+ const voices=speechSynthesis.getVoices();
+ hindiVoice=voices.find(v=>v.lang.toLowerCase()==="hi-in")||
+ voices.find(v=>v.lang.toLowerCase().startsWith("hi"));
 }
+if("speechSynthesis" in window){
+ loadHindiVoice();
+ speechSynthesis.onvoiceschanged=loadHindiVoice;
+}
+
+const voiceMessages={
+ correct:[
+ "अरे वाह! बहुत बढ़िया! तुम्हारा जवाब बिल्कुल सही है। शाबाश!",
+ "वाह! शाबाश सुपरस्टार! बिल्कुल सही जवाब!",
+ "बहुत खूब दोस्त! तुमने कमाल कर दिया!"
+ ],
+ wrong:[
+ "कोई बात नहीं दोस्त! एक बार फिर कोशिश करो।",
+ "हार मत मानो! तुम कर सकते हो। फिर से कोशिश करो!",
+ "थोड़ा और सोचो सुपरस्टार! कोशिश करते रहो!"
+ ],
+ champion:[
+ "वाह! सारे सवाल पूरे हो गए! तुम हो मैथ मस्ती के चैंपियन! बहुत खूब!",
+ "जबरदस्त! तुमने बहुत अच्छा प्रदर्शन किया! शाबाश!"
+ ]
+};
+
+function speak(text){
+ if(!voiceEnabled||!("speechSynthesis" in window))return;
+ speechSynthesis.cancel();
+ const msg=new SpeechSynthesisUtterance(text);
+ msg.lang="hi-IN";
+ msg.rate=.92;
+ msg.pitch=1.08;
+ msg.volume=1;
+ loadHindiVoice();
+ if(hindiVoice)msg.voice=hindiVoice;
+ speechSynthesis.speak(msg);
+}
+
+function playNaturalVoice(type){
+ if(!voiceEnabled)return;
+ const messages=voiceMessages[type];
+ if(!messages)return;
+ speak(messages[Math.floor(Math.random()*messages.length)]);
+}
+function correctVoice(){playNaturalVoice("correct")}
+function wrongVoice(){playNaturalVoice("wrong")}
+function championVoice(){playNaturalVoice("champion")}
+
+function toggleVoice(){
+ voiceEnabled=!voiceEnabled;
+ if(!voiceEnabled&&"speechSynthesis" in window)speechSynthesis.cancel();
+ document.getElementById("soundButton").textContent=
+ voiceEnabled?"🔊 आवाज़ चालू":"🔇 आवाज़ बंद";
+}
+
+/* QUIZ GAME */
+
+let selectedOperation="add";
+let currentQuestion=0;
+let totalQuestions=10;
+let score=0;
+let correctCount=0;
+let correctAnswer=0;
+let answered=false;
+
+let totalPlayed=Number(localStorage.getItem("mmwPlayed")||0);
+let totalCorrect=Number(localStorage.getItem("mmwCorrect")||0);
+let bestScore=Number(localStorage.getItem("mmwBest")||0);
+
+function updateDashboard(){
+ document.getElementById("totalPlayed").textContent=totalPlayed;
+ document.getElementById("totalCorrect").textContent=totalCorrect;
+ document.getElementById("bestScore").textContent=bestScore;
+}
+updateDashboard();
+
+function selectOperation(op,button){
+ selectedOperation=op;
+ document.querySelectorAll(".operation").forEach(b=>b.classList.remove("selected"));
+ button.classList.add("selected");
+}
+
+function randomNumber(min,max){
+ return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function makeQuestion(){
+ let a,b,answer,symbol;
+ if(selectedOperation==="add"){
+  a=randomNumber(1,50);b=randomNumber(1,50);answer=a+b;symbol="+";
+ }else if(selectedOperation==="subtract"){
+  a=randomNumber(10,100);b=randomNumber(1,a);answer=a-b;symbol="−";
+ }else if(selectedOperation==="multiply"){
+  a=randomNumber(1,12);b=randomNumber(1,12);answer=a*b;symbol="×";
+ }else{
+  b=randomNumber(1,12);answer=randomNumber(1,12);a=b*answer;symbol="÷";
+ }
+ return {a,b,answer,symbol};
+}
+
+function startQuiz(){
+ totalQuestions=Number(document.getElementById("questionCount").value);
+ currentQuestion=0;score=0;correctCount=0;
+ document.getElementById("dashboard").classList.add("hidden");
+ document.getElementById("resultScreen").classList.add("hidden");
+ document.getElementById("quizScreen").classList.remove("hidden");
+ loadQuestion();
+}
+
+function loadQuestion(){
+ answered=false;
+ const q=makeQuestion();
+ correctAnswer=q.answer;
+ document.getElementById("questionNumber").textContent=
+ "सवाल "+(currentQuestion+1)+"/"+totalQuestions;
+ document.getElementById("score").textContent=score;
+ document.getElementById("progressBar").style.width=
+ (currentQuestion/totalQuestions*100)+"%";
+ document.getElementById("questionText").textContent=
+ q.a+" "+q.symbol+" "+q.b+" = ?";
+ document.getElementById("feedback").textContent="";
+ document.getElementById("instruction").textContent="सही जवाब चुनें।";
+ document.getElementById("nextButton").classList.add("hidden");
+ createOptions();
+}
+
+function createOptions(){
+ let options=[correctAnswer];
+ while(options.length<4){
+  const offset=randomNumber(1,10);
+  const wrong=correctAnswer+(Math.random()<.5?offset:-offset);
+  if(wrong>=0&&!options.includes(wrong))options.push(wrong);
+ }
+ options.sort(()=>Math.random()-.5);
+ const grid=document.getElementById("answerGrid");
+ grid.innerHTML="";
+ options.forEach(value=>{
+  const button=document.createElement("button");
+  button.className="answer-option";
+  button.textContent=value;
+  button.onclick=()=>checkAnswer(value,button);
+  grid.appendChild(button);
+ });
+}
+
+function checkAnswer(value,button){
+ if(answered)return;
+ totalPlayed++;
+ localStorage.setItem("mmwPlayed",totalPlayed);
+
+ const buttons=document.querySelectorAll(".answer-option");
+
+ if(value===correctAnswer){
+  answered=true;
+  score++;
+  correctCount++;
+  totalCorrect++;
+  localStorage.setItem("mmwCorrect",totalCorrect);
+  button.classList.add("correct");
+  document.getElementById("feedback").textContent="🎉 बिल्कुल सही! बहुत खूब!";
+  document.getElementById("feedback").style.color="#159b68";
+  document.getElementById("instruction").textContent="शाबाश! अब अगला सवाल।";
+  buttons.forEach(b=>b.disabled=true);
+  correctVoice();
+  document.getElementById("nextButton").classList.remove("hidden");
+  document.getElementById("score").textContent=score;
+  document.getElementById("progressBar").style.width=
+  ((currentQuestion+1)/totalQuestions*100)+"%";
+  if(score>bestScore){
+   bestScore=score;
+   localStorage.setItem("mmwBest",bestScore);
+  }
+  updateDashboard();
+ }else{
+  button.classList.add("incorrect");
+  button.disabled=true;
+  document.getElementById("feedback").textContent="😊 कोई बात नहीं! फिर से कोशिश करो।";
+  document.getElementById("feedback").style.color="#bd3030";
+  document.getElementById("instruction").textContent="सही जवाब चुनो! अगला सवाल अभी नहीं आएगा।";
+  wrongVoice();
+ }
+}
+
+function nextQuestion(){
+ if(!answered)return;
+ currentQuestion++;
+ if(currentQuestion>=totalQuestions)showResult();
+ else loadQuestion();
+}
+
+function showResult(){
+ document.getElementById("quizScreen").classList.add("hidden");
+ document.getElementById("resultScreen").classList.remove("hidden");
+ const percentage=Math.round(correctCount/totalQuestions*100);
+ document.getElementById("finalScore").textContent=score+"/"+totalQuestions;
+ document.getElementById("finalCorrect").textContent=correctCount;
+ document.getElementById("finalPercent").textContent=percentage+"%";
+ let message="अच्छी कोशिश! अभ्यास करते रहो!";
+ if(percentage===100)message="🌟 कमाल कर दिया! तुम Math Champion हो!";
+ else if(percentage>=70)message="👏 बहुत बढ़िया! तुम शानदार हो!";
+ else if(percentage>=40)message="👍 अच्छा प्रयास! और अभ्यास करो!";
+ document.getElementById("resultMessage").textContent=message;
+ updateDashboard();
+ championVoice();
+}
+
+function goHome(){
+ if("speechSynthesis" in window)speechSynthesis.cancel();
+ document.getElementById("quizScreen").classList.add("hidden");
+ document.getElementById("resultScreen").classList.add("hidden");
+ document.getElementById("dashboard").classList.remove("hidden");
+ updateDashboard();
+}
+</script>
+</body>
+</html>
