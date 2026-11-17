@@ -5,28 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#7049e8">
 <title>Math Masti World</title>
-
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#f4f1ff;color:#29234b}
-header{background:linear-gradient(135deg,#7049e8,#a16cf5);color:white;text-align:center;padding:24px 15px;border-radius:0 0 28px 28px}
-header h1{margin:0;font-size:29px}
-header p{margin:8px 0}
-.container{max-width:850px;margin:auto;padding:18px}
-.card{background:white;padding:20px;border-radius:20px;margin:15px 0;box-shadow:0 5px 18px #33205b12}
+header{background:linear-gradient(135deg,#7049e8,#a16cf5);color:white;text-align:center;padding:22px 12px;border-radius:0 0 25px 25px}
+header h1{margin:0;font-size:27px}
+.container{max-width:850px;margin:auto;padding:15px}
+.card{background:white;padding:19px;border-radius:20px;margin:14px 0;box-shadow:0 5px 18px #33205b12}
 h2{margin-top:0}
-button{border:0;border-radius:13px;padding:13px 18px;font-size:16px;font-weight:bold;cursor:pointer;margin:5px;background:#7049e8;color:white}
-button:disabled{opacity:.55;cursor:not-allowed}
-.operation-grid,.answer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.operation{background:#f0eaff;color:#482d91;padding:22px 10px;font-size:19px}
-.operation.selected{background:#7049e8;color:white}
+button{border:0;border-radius:13px;padding:12px 16px;font-size:16px;font-weight:bold;cursor:pointer;margin:4px;background:#7049e8;color:white}
 .primary{background:#7049e8;color:white}
 .secondary{background:#eee8ff;color:#482d91}
 .green{background:#159b68}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
-.stat{background:#f5f1ff;border-radius:14px;padding:15px 5px}
-.stat strong{display:block;font-size:24px;color:#7049e8}
-.stat span{font-size:13px}
+.hidden{display:none!important}
+.center{text-align:center}
+input,select{width:100%;padding:13px;border:2px solid #ddd3f8;border-radius:12px;font-size:17px;margin:9px 0}
+.language-buttons{display:flex;justify-content:center;gap:8px;margin:10px}
+.language-buttons button{background:white;color:#7049e8}
+.language-buttons button.active{background:#38216f;color:white}
+.operation-grid,.answer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.operation{background:#f0eaff;color:#482d91;padding:20px 8px;font-size:18px}
+.operation.selected{background:#7049e8;color:white}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.stat{background:#f5f1ff;border-radius:13px;padding:13px 3px}
+.stat strong{display:block;font-size:23px;color:#7049e8}
+.stat span{font-size:12px}
 .question{text-align:center;font-size:38px;font-weight:bold;padding:25px 5px;color:#4d3198}
 .answer-option{background:#f0eaff;color:#482d91;font-size:23px;padding:18px}
 .answer-option.correct{background:#d9f8e8;color:#087a45}
@@ -34,42 +37,81 @@ button:disabled{opacity:.55;cursor:not-allowed}
 #feedback{text-align:center;font-size:19px;font-weight:bold;min-height:35px;margin:15px 0}
 .progress-bg{background:#e8e1f7;height:12px;border-radius:20px;overflow:hidden}
 #progressBar{background:linear-gradient(90deg,#7049e8,#c17cff);height:100%;width:0%;transition:.3s}
-.hidden{display:none!important}
-.center{text-align:center}
-input,select{width:100%;padding:14px;border:2px solid #ddd3f8;border-radius:12px;font-size:18px;margin:10px 0}
-footer{text-align:center;color:#81799b;padding:20px}
-.small{font-size:13px;color:#777}
+.avatar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:15px 0}
+.avatar-choice{font-size:32px;background:#f0eaff;color:#482d91;padding:12px;border:3px solid transparent}
+.avatar-choice.selected{border-color:#7049e8;background:#e2d5ff}
+.profile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.profile-card{background:#f5f1ff;color:#39266c;border:2px solid transparent;padding:15px 7px;border-radius:17px;margin:0}
+.profile-card .avatar{font-size:43px;display:block;margin-bottom:7px}
+.profile-card small{display:block;color:#777;margin-top:5px}
+.current-profile{display:flex;align-items:center;justify-content:center;gap:12px;background:#f0eaff;padding:12px;border-radius:15px;margin-bottom:15px}
+.current-profile .avatar{font-size:38px}
 #soundButton{background:white;color:#7049e8}
-.language-buttons{display:flex;justify-content:center;gap:8px;margin-top:12px}
-.language-buttons button{background:white;color:#7049e8;border:2px solid transparent}
-.language-buttons button.active{background:#38216f;color:white;border-color:white}
+footer{text-align:center;color:#81799b;padding:20px}
 @media(max-width:480px){
-header h1{font-size:25px}
-.container{padding:12px}
-.card{padding:16px}
+header h1{font-size:23px}
+.container{padding:10px}
+.card{padding:15px}
 .question{font-size:32px}
 }
 </style>
 </head>
-
 <body>
 
 <header>
 <h1>🌟 Math Masti World 🌟</h1>
 <p id="tagline">खेल-खेल में गणित सीखें!</p>
-
 <div class="language-buttons">
 <button id="hindiBtn" onclick="changeLanguage('hi')">🇮🇳 हिंदी</button>
 <button id="englishBtn" onclick="changeLanguage('en')">🇬🇧 English</button>
 </div>
-
 <button id="soundButton" onclick="toggleVoice()">🔊 आवाज़ चालू</button>
 </header>
 
 <main class="container">
 
-<section id="dashboard">
+<!-- PROFILE SCREEN -->
+<section id="profileScreen">
 <div class="card center">
+<h2 id="profileTitle">👨‍👩‍👧‍👦 बच्चों की Profiles</h2>
+<p id="profileSubtitle">अपनी Profile चुनें और गणित खेलें!</p>
+<div class="profile-grid" id="profileGrid"></div>
+</div>
+
+<div class="card">
+<h2 id="addTitle">✨ नई Profile बनाएँ</h2>
+<p id="nameLabel">बच्चे का नाम लिखें</p>
+<input id="childName" maxlength="20" placeholder="बच्चे का नाम">
+
+<p id="avatarLabel">अपना प्यारा Avatar चुनें</p>
+<div class="avatar-grid" id="avatarGrid">
+<button class="avatar-choice selected" onclick="chooseAvatar('👦',this)">👦</button>
+<button class="avatar-choice" onclick="chooseAvatar('👧',this)">👧</button>
+<button class="avatar-choice" onclick="chooseAvatar('🧒',this)">🧒</button>
+<button class="avatar-choice" onclick="chooseAvatar('🦸',this)">🦸</button>
+<button class="avatar-choice" onclick="chooseAvatar('🧚',this)">🧚</button>
+<button class="avatar-choice" onclick="chooseAvatar('🐼',this)">🐼</button>
+<button class="avatar-choice" onclick="chooseAvatar('🦁',this)">🦁</button>
+<button class="avatar-choice" onclick="chooseAvatar('🐯',this)">🐯</button>
+</div>
+<button class="primary" id="createBtn" style="width:100%" onclick="createProfile()">➕ Create Profile</button>
+<p class="center" id="profileLimit">अधिकतम 5 बच्चों की Profiles बना सकते हैं।</p>
+</div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="hidden">
+
+<div class="card center">
+<div class="current-profile">
+<span class="avatar" id="activeAvatar">👦</span>
+<div style="text-align:left">
+<strong id="activeName">Superstar</strong>
+<div id="activeLabel">My Profile</div>
+</div>
+</div>
+<button class="secondary" id="switchBtn" onclick="showProfiles()">👥 Change Profile</button>
+
 <h2 id="welcome">नमस्ते Superstar! 👋</h2>
 <p id="welcomeText">आज गणित में धमाल मचाने के लिए तैयार हो?</p>
 
@@ -98,47 +140,41 @@ header h1{font-size:25px}
 <option value="15">15 सवाल</option>
 <option value="20">20 सवाल</option>
 </select>
-<button class="primary" style="width:100%;margin-top:15px" id="startBtn" onclick="startQuiz()">🚀 खेल शुरू करें</button>
+<button class="primary" style="width:100%;margin-top:12px" id="startBtn" onclick="startQuiz()">🚀 खेल शुरू करें</button>
 </div>
 </section>
 
+<!-- QUIZ -->
 <section id="quizScreen" class="hidden">
 <div class="card">
-
 <div style="display:flex;justify-content:space-between;gap:8px">
 <strong id="questionNumber">सवाल 1/10</strong>
 <strong><span id="scoreLabel">⭐ स्कोर:</span> <span id="score">0</span></strong>
 </div>
-
 <div class="progress-bg" style="margin-top:14px">
 <div id="progressBar"></div>
 </div>
-
 <div class="question" id="questionText"></div>
 <div class="answer-grid" id="answerGrid"></div>
 <div id="feedback"></div>
-<p class="center small" id="instruction">सही जवाब चुनें।</p>
-
+<p class="center" id="instruction">सही जवाब चुनें।</p>
 <button id="nextButton" class="green hidden" style="width:100%" onclick="nextQuestion()">अगला सवाल ➜</button>
 <button class="secondary" style="width:100%" id="homeQuizBtn" onclick="goHome()">🏠 होम पर जाएँ</button>
-
 </div>
 </section>
 
+<!-- RESULT -->
 <section id="resultScreen" class="hidden">
 <div class="card center">
 <div style="font-size:65px">🏆</div>
 <h2 id="resultTitle">शानदार प्रदर्शन!</h2>
 <p id="resultIntro">तुमने अपना क्विज पूरा कर लिया!</p>
-
 <div class="stats">
 <div class="stat"><strong id="finalScore">0</strong><span id="finalScoreLabel">स्कोर</span></div>
 <div class="stat"><strong id="finalCorrect">0</strong><span id="finalCorrectLabel">सही जवाब</span></div>
 <div class="stat"><strong id="finalPercent">0%</strong><span id="finalPercentLabel">परिणाम</span></div>
 </div>
-
 <h2 id="resultMessage">बहुत खूब!</h2>
-
 <button class="primary" style="width:100%" id="replayBtn" onclick="startQuiz()">🔄 फिर से खेलें</button>
 <button class="secondary" style="width:100%" id="homeResultBtn" onclick="goHome()">🏠 होम पर जाएँ</button>
 </div>
@@ -153,164 +189,279 @@ header h1{font-size:25px}
 
 <script>
 
-/* LANGUAGE SYSTEM */
+/* LANGUAGE */
 
 let currentLanguage=localStorage.getItem("mmwLanguage")||"hi";
 
-const translations={hi:{
+const translations={
+hi:{
 tagline:"खेल-खेल में गणित सीखें!",
-welcome:"नमस्ते Superstar! 👋",
+profileTitle:"👨‍👩‍👧‍👦 बच्चों की Profiles",
+profileSubtitle:"अपनी Profile चुनें और गणित खेलें!",
+addTitle:"✨ नई Profile बनाएँ",
+nameLabel:"बच्चे का नाम लिखें",
+namePlaceholder:"बच्चे का नाम",
+avatarLabel:"अपना प्यारा Avatar चुनें",
+create:"➕ Profile बनाएँ",
+profileLimit:"अधिकतम 5 बच्चों की Profiles बना सकते हैं।",
+activeLabel:"मेरी Profile",
+switch:"👥 Profile बदलें",
+welcome:"नमस्ते",
 welcomeText:"आज गणित में धमाल मचाने के लिए तैयार हो?",
 played:"कुल सवाल",correct:"सही जवाब",best:"बेस्ट स्कोर",
 choose:"📚 अपना गणित चुनें",
-add:"➕ जोड़",subtract:"➖ घटाव",
-multiply:"✖️ गुणा",divide:"➗ भाग",
-count:"🎯 सवालों की संख्या",
-questions:"सवाल",start:"🚀 खेल शुरू करें",
-score:"⭐ स्कोर:",question:"सवाल",
-instruction:"सही जवाब चुनें।",
+add:"➕ जोड़",subtract:"➖ घटाव",multiply:"✖️ गुणा",divide:"➗ भाग",
+count:"🎯 सवालों की संख्या",start:"🚀 खेल शुरू करें",
+score:"⭐ स्कोर:",question:"सवाल",instruction:"सही जवाब चुनें।",
 next:"अगला सवाल ➜",home:"🏠 होम पर जाएँ",
-resultTitle:"शानदार प्रदर्शन!",
-resultIntro:"तुमने अपना क्विज पूरा कर लिया!",
-finalScore:"स्कोर",finalCorrect:"सही जवाब",
-finalPercent:"परिणाम",
+resultTitle:"शानदार प्रदर्शन!",resultIntro:"तुमने अपना क्विज पूरा कर लिया!",
+finalScore:"स्कोर",finalCorrect:"सही जवाब",finalPercent:"परिणाम",
 replay:"🔄 फिर से खेलें",
-footer:"Made with ❤️ for little Math Champions",
 right:"🎉 बिल्कुल सही! बहुत खूब!",
 rightInstruction:"शाबाश! अब अगला सवाल।",
 wrong:"😊 कोई बात नहीं! फिर से कोशिश करो।",
 wrongInstruction:"सही जवाब चुनो! अगला सवाल अभी नहीं आएगा।",
-resultMessages:[
+messages:[
 "अच्छी कोशिश! अभ्यास करते रहो!",
 "👍 अच्छा प्रयास! और अभ्यास करो!",
 "👏 बहुत बढ़िया! तुम शानदार हो!",
 "🌟 कमाल कर दिया! तुम Math Champion हो!"
 ],
 countOptions:["5 सवाल","10 सवाल","15 सवाल","20 सवाल"],
-voiceOn:"🔊 आवाज़ चालू",voiceOff:"🔇 आवाज़ बंद"
+voiceOn:"🔊 आवाज़ चालू",voiceOff:"🔇 आवाज़ बंद",
+limitReached:"अधिकतम 5 Profiles बन चुकी हैं!",
+enterName:"कृपया बच्चे का नाम लिखें।"
 },
-
 en:{
 tagline:"Learn Maths While Playing!",
-welcome:"Hello Superstar! 👋",
+profileTitle:"👨‍👩‍👧‍👦 Kids Profiles",
+profileSubtitle:"Choose your profile and start learning!",
+addTitle:"✨ Create New Profile",
+nameLabel:"Enter child's name",
+namePlaceholder:"Child's name",
+avatarLabel:"Choose your favourite Avatar",
+create:"➕ Create Profile",
+profileLimit:"You can create up to 5 kids profiles.",
+activeLabel:"My Profile",
+switch:"👥 Change Profile",
+welcome:"Hello",
 welcomeText:"Are you ready to rock the world of Maths today?",
 played:"Total Questions",correct:"Correct Answers",best:"Best Score",
 choose:"📚 Choose Your Maths",
 add:"➕ Addition",subtract:"➖ Subtraction",
 multiply:"✖️ Multiplication",divide:"➗ Division",
-count:"🎯 Number of Questions",
-questions:"Questions",start:"🚀 Start Playing",
-score:"⭐ Score:",
-question:"Question",
+count:"🎯 Number of Questions",start:"🚀 Start Playing",
+score:"⭐ Score:",question:"Question",
 instruction:"Choose the correct answer.",
 next:"Next Question ➜",home:"🏠 Go Home",
 resultTitle:"Amazing Performance!",
 resultIntro:"You have completed your quiz!",
-finalScore:"Score",finalCorrect:"Correct",
-finalPercent:"Result",
+finalScore:"Score",finalCorrect:"Correct",finalPercent:"Result",
 replay:"🔄 Play Again",
-footer:"Made with ❤️ for little Math Champions",
 right:"🎉 Excellent! Your answer is correct!",
 rightInstruction:"Well done! Let's try the next question.",
 wrong:"😊 No worries! Let's try again.",
 wrongInstruction:"Choose the right answer! Try again.",
-resultMessages:[
+messages:[
 "Good effort! Keep practising!",
 "👍 Nice try! Keep learning!",
 "👏 Very Good! You are amazing!",
 "🌟 Outstanding! You are a Math Champion!"
 ],
 countOptions:["5 Questions","10 Questions","15 Questions","20 Questions"],
-voiceOn:"🔊 Voice On",voiceOff:"🔇 Voice Off"
-}};
-
-function tr(key){
-return translations[currentLanguage][key];
+voiceOn:"🔊 Voice On",voiceOff:"🔇 Voice Off",
+limitReached:"Maximum 5 profiles reached!",
+enterName:"Please enter the child's name."
 }
+};
+
+function tr(k){return translations[currentLanguage][k]}
 
 function changeLanguage(lang){
 currentLanguage=lang;
 localStorage.setItem("mmwLanguage",lang);
-
 document.documentElement.lang=lang;
 document.getElementById("hindiBtn").classList.toggle("active",lang==="hi");
 document.getElementById("englishBtn").classList.toggle("active",lang==="en");
-
 applyLanguage();
 }
 
 function applyLanguage(){
-
-const ids={
-tagline:"tagline",welcome:"welcome",
-welcomeText:"welcomeText",
-playedLabel:"played",correctLabel:"correct",
-bestLabel:"best",chooseMath:"choose",
-countTitle:"count",startBtn:"start",
-scoreLabel:"score",instruction:"instruction",
-homeQuizBtn:"home",resultTitle:"resultTitle",
-resultIntro:"resultIntro",
-finalScoreLabel:"finalScore",
-finalCorrectLabel:"finalCorrect",
-finalPercentLabel:"finalPercent",
-replayBtn:"replay",homeResultBtn:"home",
-footerText:"footer"
+const map={
+tagline:"tagline",profileTitle:"profileTitle",
+profileSubtitle:"profileSubtitle",addTitle:"addTitle",
+nameLabel:"nameLabel",avatarLabel:"avatarLabel",
+profileLimit:"profileLimit",createBtn:"create",
+activeLabel:"activeLabel",switchBtn:"switch",
+welcomeText:"welcomeText",playedLabel:"played",
+correctLabel:"correct",bestLabel:"best",
+chooseMath:"choose",countTitle:"count",
+startBtn:"start",scoreLabel:"score",
+instruction:"instruction",homeQuizBtn:"home",
+resultTitle:"resultTitle",resultIntro:"resultIntro",
+finalScoreLabel:"finalScore",finalCorrectLabel:"finalCorrect",
+finalPercentLabel:"finalPercent",replayBtn:"replay",
+homeResultBtn:"home",footerText:"footer"
 };
 
-Object.keys(ids).forEach(id=>{
-document.getElementById(id).textContent=tr(ids[id]);
+Object.keys(map).forEach(id=>{
+if(translations[currentLanguage][map[id]]!==undefined)
+document.getElementById(id).textContent=tr(map[id]);
 });
 
-document.querySelector('[data-op="add"]').textContent=tr("add");
-document.querySelector('[data-op="subtract"]').textContent=tr("subtract");
-document.querySelector('[data-op="multiply"]').textContent=tr("multiply");
-document.querySelector('[data-op="divide"]').textContent=tr("divide");
+document.getElementById("childName").placeholder=tr("namePlaceholder");
+
+["add","subtract","multiply","divide"].forEach(op=>{
+document.querySelector('[data-op="'+op+'"]').textContent=tr(op);
+});
 
 const count=document.getElementById("questionCount");
-const oldValue=count.value;
+const old=count.value;
 count.innerHTML="";
 [5,10,15,20].forEach((n,i)=>{
-const option=document.createElement("option");
-option.value=n;
-option.textContent=tr("countOptions")[i];
-count.appendChild(option);
+let o=document.createElement("option");
+o.value=n;
+o.textContent=tr("countOptions")[i];
+count.appendChild(o);
 });
-count.value=oldValue;
+count.value=old;
 
-document.getElementById("soundButton").textContent=
-voiceEnabled?tr("voiceOn"):tr("voiceOff");
-
+document.getElementById("soundButton").textContent=voiceEnabled?tr("voiceOn"):tr("voiceOff");
 document.getElementById("nextButton").textContent=tr("next");
 
+if(activeProfile){
+document.getElementById("welcome").textContent=tr("welcome")+" "+activeProfile.name+"! 👋";
+}
+renderProfiles();
+
 if(!document.getElementById("quizScreen").classList.contains("hidden")){
-document.getElementById("questionNumber").textContent=
-tr("question")+" "+(currentQuestion+1)+"/"+totalQuestions;
+document.getElementById("questionNumber").textContent=tr("question")+" "+(currentQuestion+1)+"/"+totalQuestions;
+document.getElementById("instruction").textContent=answered?tr("rightInstruction"):tr("instruction");
+if(answered)document.getElementById("feedback").textContent=tr("right");
+}
+if(!document.getElementById("resultScreen").classList.contains("hidden"))updateResultText();
+}
 
-document.getElementById("instruction").textContent=
-answered?tr("rightInstruction"):tr("instruction");
+/* KIDS PROFILES */
 
-if(answered){
-document.getElementById("feedback").textContent=tr("right");
+let profiles=JSON.parse(localStorage.getItem("mmwProfiles")||"[]");
+let activeProfile=null;
+let selectedAvatar="👦";
+
+function saveProfiles(){
+localStorage.setItem("mmwProfiles",JSON.stringify(profiles));
+}
+
+function chooseAvatar(avatar,button){
+selectedAvatar=avatar;
+document.querySelectorAll(".avatar-choice").forEach(b=>b.classList.remove("selected"));
+button.classList.add("selected");
+}
+
+function createProfile(){
+
+let name=document.getElementById("childName").value.trim();
+
+if(!name){
+alert(tr("enterName"));
+return;
+}
+
+if(profiles.length>=5){
+alert(tr("limitReached"));
+return;
+}
+
+let profile={
+id:Date.now().toString()+Math.random().toString(36).slice(2),
+name:name,
+avatar:selectedAvatar,
+played:0,
+correct:0,
+best:0
+};
+
+profiles.push(profile);
+saveProfiles();
+
+document.getElementById("childName").value="";
+selectedAvatar="👦";
+document.querySelectorAll(".avatar-choice").forEach((b,i)=>{
+b.classList.toggle("selected",i===0);
+});
+
+renderProfiles();
+selectProfile(profile.id);
+}
+
+function renderProfiles(){
+
+const grid=document.getElementById("profileGrid");
+if(!grid)return;
+
+grid.innerHTML="";
+
+profiles.forEach(p=>{
+let button=document.createElement("button");
+button.className="profile-card";
+button.innerHTML=
+'<span class="avatar">'+p.avatar+'</span>'+
+'<strong></strong>'+
+'<small>'+p.correct+' / '+p.played+' '+(currentLanguage==="hi"?"सही जवाब":"correct answers")+'</small>';
+
+button.querySelector("strong").textContent=p.name;
+button.onclick=()=>selectProfile(p.id);
+grid.appendChild(button);
+});
+
+const addCard=document.createElement("div");
+addCard.className="profile-card center";
+addCard.style.background="#eee8ff";
+addCard.style.color="#7049e8";
+addCard.innerHTML="<div style='font-size:40px'>➕</div><strong>"+(currentLanguage==="hi"?"नई Profile":"Add Profile")+"</strong>";
+if(profiles.length>=5){
+addCard.style.opacity=".5";
 }else{
-document.getElementById("feedback").textContent="";
+addCard.onclick=()=>document.getElementById("childName").focus();
+addCard.style.cursor="pointer";
 }
-}
-
-if(!document.getElementById("resultScreen").classList.contains("hidden")){
-updateResultText();
-}
+grid.appendChild(addCard);
 }
 
-/* VOICE SYSTEM */
+function selectProfile(id){
+
+activeProfile=profiles.find(p=>p.id===id);
+if(!activeProfile)return;
+
+localStorage.setItem("mmwActiveProfile",id);
+
+document.getElementById("profileScreen").classList.add("hidden");
+document.getElementById("dashboard").classList.remove("hidden");
+
+document.getElementById("activeAvatar").textContent=activeProfile.avatar;
+document.getElementById("activeName").textContent=activeProfile.name;
+document.getElementById("welcome").textContent=tr("welcome")+" "+activeProfile.name+"! 👋";
+
+updateDashboard();
+}
+
+function showProfiles(){
+if("speechSynthesis" in window)speechSynthesis.cancel();
+document.getElementById("dashboard").classList.add("hidden");
+document.getElementById("quizScreen").classList.add("hidden");
+document.getElementById("resultScreen").classList.add("hidden");
+document.getElementById("profileScreen").classList.remove("hidden");
+renderProfiles();
+}
+
+/* VOICE */
 
 let voiceEnabled=true;
 let availableVoices=[];
 
 function loadVoices(){
-if(!("speechSynthesis" in window))return;
-availableVoices=speechSynthesis.getVoices();
+if("speechSynthesis" in window)availableVoices=speechSynthesis.getVoices();
 }
-
 if("speechSynthesis" in window){
 loadVoices();
 speechSynthesis.onvoiceschanged=loadVoices;
@@ -329,8 +480,8 @@ wrong:[
 "थोड़ा और सोचो सुपरस्टार! कोशिश करते रहो!"
 ],
 champion:[
-"वाह! सारे सवाल पूरे हो गए! तुम हो मैथ मस्ती के चैंपियन!",
-"जबरदस्त! तुमने बहुत अच्छा प्रदर्शन किया! शाबाश!"
+"वाह! तुमने सारे सवाल पूरे कर लिए! बहुत खूब!",
+"जबरदस्त! तुमने बहुत अच्छा प्रदर्शन किया!"
 ]
 },
 en:{
@@ -345,58 +496,41 @@ wrong:[
 "Think a little more, superstar! You've got this!"
 ],
 champion:[
-"Wow! You completed all the questions! You are a Math Masti Champion!",
-"Outstanding performance! You did a wonderful job!"
+"Outstanding performance! You did a wonderful job!",
+"Excellent! You are a Math Masti Champion!"
 ]
 }
 };
 
 function speak(text){
-
 if(!voiceEnabled||!("speechSynthesis" in window))return;
-
 speechSynthesis.cancel();
 
-const msg=new SpeechSynthesisUtterance(text);
-
-if(currentLanguage==="hi"){
-msg.lang="hi-IN";
-msg.rate=.90;
-msg.pitch=1.08;
-}else{
-msg.lang="en-IN";
-msg.rate=.94;
-msg.pitch=1.05;
-}
-
+let msg=new SpeechSynthesisUtterance(text);
+msg.lang=currentLanguage==="hi"?"hi-IN":"en-IN";
+msg.rate=currentLanguage==="hi"?.90:.94;
+msg.pitch=1.06;
 msg.volume=1;
 
 loadVoices();
 
-let voice=null;
+let voice=availableVoices.find(v=>
+currentLanguage==="hi"
+?v.lang.toLowerCase().startsWith("hi")
+:v.lang.toLowerCase()==="en-in"
+);
 
-if(currentLanguage==="hi"){
-voice=availableVoices.find(v=>v.lang.toLowerCase()==="hi-in")||
-availableVoices.find(v=>v.lang.toLowerCase().startsWith("hi"));
-}else{
-voice=availableVoices.find(v=>v.lang.toLowerCase()==="en-in")||
-availableVoices.find(v=>v.lang.toLowerCase().startsWith("en"));
-}
+if(!voice&&currentLanguage==="en")
+voice=availableVoices.find(v=>v.lang.toLowerCase().startsWith("en"));
 
 if(voice)msg.voice=voice;
-
 speechSynthesis.speak(msg);
 }
 
 function playNaturalVoice(type){
 if(!voiceEnabled)return;
-
-const messages=voiceMessages[currentLanguage][type];
-
-if(!messages)return;
-
-const message=messages[Math.floor(Math.random()*messages.length)];
-speak(message);
+let arr=voiceMessages[currentLanguage][type];
+speak(arr[Math.floor(Math.random()*arr.length)]);
 }
 
 function correctVoice(){playNaturalVoice("correct")}
@@ -405,16 +539,11 @@ function championVoice(){playNaturalVoice("champion")}
 
 function toggleVoice(){
 voiceEnabled=!voiceEnabled;
-
-if(!voiceEnabled&&"speechSynthesis" in window){
-speechSynthesis.cancel();
+if(!voiceEnabled&&"speechSynthesis" in window)speechSynthesis.cancel();
+document.getElementById("soundButton").textContent=voiceEnabled?tr("voiceOn"):tr("voiceOff");
 }
 
-document.getElementById("soundButton").textContent=
-voiceEnabled?tr("voiceOn"):tr("voiceOff");
-}
-
-/* QUIZ GAME */
+/* QUIZ */
 
 let selectedOperation="add";
 let currentQuestion=0;
@@ -424,17 +553,20 @@ let correctCount=0;
 let correctAnswer=0;
 let answered=false;
 
-let totalPlayed=Number(localStorage.getItem("mmwPlayed")||0);
-let totalCorrect=Number(localStorage.getItem("mmwCorrect")||0);
-let bestScore=Number(localStorage.getItem("mmwBest")||0);
-
 function updateDashboard(){
-document.getElementById("totalPlayed").textContent=totalPlayed;
-document.getElementById("totalCorrect").textContent=totalCorrect;
-document.getElementById("bestScore").textContent=bestScore;
+if(!activeProfile)return;
+document.getElementById("totalPlayed").textContent=activeProfile.played;
+document.getElementById("totalCorrect").textContent=activeProfile.correct;
+document.getElementById("bestScore").textContent=activeProfile.best;
 }
 
+function saveActiveProfile(){
+if(!activeProfile)return;
+let index=profiles.findIndex(p=>p.id===activeProfile.id);
+if(index!==-1)profiles[index]=activeProfile;
+saveProfiles();
 updateDashboard();
+}
 
 function selectOperation(op,button){
 selectedOperation=op;
@@ -447,47 +579,28 @@ return Math.floor(Math.random()*(max-min+1))+min;
 }
 
 function makeQuestion(){
-
 let a,b,answer,symbol;
 
 if(selectedOperation==="add"){
-a=randomNumber(1,50);
-b=randomNumber(1,50);
-answer=a+b;
-symbol="+";
-
+a=randomNumber(1,50);b=randomNumber(1,50);answer=a+b;symbol="+";
 }else if(selectedOperation==="subtract"){
-a=randomNumber(10,100);
-b=randomNumber(1,a);
-answer=a-b;
-symbol="−";
-
+a=randomNumber(10,100);b=randomNumber(1,a);answer=a-b;symbol="−";
 }else if(selectedOperation==="multiply"){
-a=randomNumber(1,12);
-b=randomNumber(1,12);
-answer=a*b;
-symbol="×";
-
+a=randomNumber(1,12);b=randomNumber(1,12);answer=a*b;symbol="×";
 }else{
-b=randomNumber(1,12);
-answer=randomNumber(1,12);
-a=b*answer;
-symbol="÷";
+b=randomNumber(1,12);answer=randomNumber(1,12);a=b*answer;symbol="÷";
 }
-
 return {a,b,answer,symbol};
 }
 
 function startQuiz(){
-
+if(!activeProfile)return;
 if("speechSynthesis" in window)speechSynthesis.cancel();
 
 totalQuestions=Number(document.getElementById("questionCount").value);
+currentQuestion=0;score=0;correctCount=0;
 
-currentQuestion=0;
-score=0;
-correctCount=0;
-
+document.getElementById("profileScreen").classList.add("hidden");
 document.getElementById("dashboard").classList.add("hidden");
 document.getElementById("resultScreen").classList.add("hidden");
 document.getElementById("quizScreen").classList.remove("hidden");
@@ -496,49 +609,37 @@ loadQuestion();
 }
 
 function loadQuestion(){
-
 answered=false;
-
-const q=makeQuestion();
+let q=makeQuestion();
 correctAnswer=q.answer;
 
-document.getElementById("questionNumber").textContent=
-tr("question")+" "+(currentQuestion+1)+"/"+totalQuestions;
-
+document.getElementById("questionNumber").textContent=tr("question")+" "+(currentQuestion+1)+"/"+totalQuestions;
 document.getElementById("score").textContent=score;
-
-document.getElementById("progressBar").style.width=
-(currentQuestion/totalQuestions*100)+"%";
-
-document.getElementById("questionText").textContent=
-q.a+" "+q.symbol+" "+q.b+" = ?";
-
+document.getElementById("progressBar").style.width=(currentQuestion/totalQuestions*100)+"%";
+document.getElementById("questionText").textContent=q.a+" "+q.symbol+" "+q.b+" = ?";
 document.getElementById("feedback").textContent="";
 document.getElementById("instruction").textContent=tr("instruction");
-
 document.getElementById("nextButton").classList.add("hidden");
 
 createOptions();
 }
 
 function createOptions(){
-
 let options=[correctAnswer];
 
 while(options.length<4){
-const offset=randomNumber(1,10);
-const wrong=correctAnswer+(Math.random()<.5?offset:-offset);
-
+let offset=randomNumber(1,10);
+let wrong=correctAnswer+(Math.random()<.5?offset:-offset);
 if(wrong>=0&&!options.includes(wrong))options.push(wrong);
 }
 
 options.sort(()=>Math.random()-.5);
 
-const grid=document.getElementById("answerGrid");
+let grid=document.getElementById("answerGrid");
 grid.innerHTML="";
 
 options.forEach(value=>{
-const button=document.createElement("button");
+let button=document.createElement("button");
 button.className="answer-option";
 button.textContent=value;
 button.onclick=()=>checkAnswer(value,button);
@@ -547,120 +648,89 @@ grid.appendChild(button);
 }
 
 function checkAnswer(value,button){
-
 if(answered)return;
 
-totalPlayed++;
-localStorage.setItem("mmwPlayed",totalPlayed);
-
+activeProfile.played++;
 const buttons=document.querySelectorAll(".answer-option");
 
 if(value===correctAnswer){
-
 answered=true;
 score++;
 correctCount++;
-totalCorrect++;
-
-localStorage.setItem("mmwCorrect",totalCorrect);
+activeProfile.correct++;
 
 button.classList.add("correct");
-
 document.getElementById("feedback").textContent=tr("right");
 document.getElementById("feedback").style.color="#159b68";
-
 document.getElementById("instruction").textContent=tr("rightInstruction");
 
 buttons.forEach(b=>b.disabled=true);
-
 correctVoice();
 
 document.getElementById("nextButton").classList.remove("hidden");
-
 document.getElementById("score").textContent=score;
+document.getElementById("progressBar").style.width=((currentQuestion+1)/totalQuestions*100)+"%";
 
-document.getElementById("progressBar").style.width=
-((currentQuestion+1)/totalQuestions*100)+"%";
-
-if(score>bestScore){
-bestScore=score;
-localStorage.setItem("mmwBest",bestScore);
-}
-
-updateDashboard();
+if(score>activeProfile.best)activeProfile.best=score;
+saveActiveProfile();
 
 }else{
-
 button.classList.add("incorrect");
 button.disabled=true;
-
 document.getElementById("feedback").textContent=tr("wrong");
 document.getElementById("feedback").style.color="#bd3030";
-
 document.getElementById("instruction").textContent=tr("wrongInstruction");
-
+saveActiveProfile();
 wrongVoice();
 }
 }
 
 function nextQuestion(){
-
 if(!answered)return;
-
 currentQuestion++;
-
-if(currentQuestion>=totalQuestions){
-showResult();
-}else{
-loadQuestion();
-}
+if(currentQuestion>=totalQuestions)showResult();
+else loadQuestion();
 }
 
 function updateResultText(){
-
-const percentage=Math.round(correctCount/totalQuestions*100);
-const messages=tr("resultMessages");
-
-let index=0;
-
-if(percentage===100)index=3;
-else if(percentage>=70)index=2;
-else if(percentage>=40)index=1;
-
-document.getElementById("resultMessage").textContent=messages[index];
+let percentage=Math.round(correctCount/totalQuestions*100);
+let index=percentage===100?3:percentage>=70?2:percentage>=40?1:0;
+document.getElementById("resultMessage").textContent=tr("messages")[index];
 }
 
 function showResult(){
-
 document.getElementById("quizScreen").classList.add("hidden");
 document.getElementById("resultScreen").classList.remove("hidden");
 
-const percentage=Math.round(correctCount/totalQuestions*100);
+let percentage=Math.round(correctCount/totalQuestions*100);
 
 document.getElementById("finalScore").textContent=score+"/"+totalQuestions;
 document.getElementById("finalCorrect").textContent=correctCount;
 document.getElementById("finalPercent").textContent=percentage+"%";
 
 updateResultText();
-updateDashboard();
-
 championVoice();
 }
 
 function goHome(){
-
 if("speechSynthesis" in window)speechSynthesis.cancel();
-
 document.getElementById("quizScreen").classList.add("hidden");
 document.getElementById("resultScreen").classList.add("hidden");
 document.getElementById("dashboard").classList.remove("hidden");
-
 updateDashboard();
 }
 
-/* INITIALIZE */
+/* START */
 
 changeLanguage(currentLanguage);
+renderProfiles();
+
+let savedId=localStorage.getItem("mmwActiveProfile");
+if(savedId&&profiles.some(p=>p.id===savedId)){
+selectProfile(savedId);
+}else{
+document.getElementById("profileScreen").classList.remove("hidden");
+}
 
 </script>
 </body>
