@@ -1,1 +1,337 @@
-/storage/emulated/0/Download/math-masti-world-2.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#7049e8">
+<title>Math Masti World</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:linear-gradient(135deg,#eee8ff,#dff5ff);
+ color:#29234b;
+ min-height:100vh;
+}
+header{
+ background:linear-gradient(120deg,#7049e8,#a04de8);
+ color:white;text-align:center;
+ padding:22px 12px;
+ border-radius:0 0 25px 25px;
+}
+header h1{margin:0;font-size:29px}
+header p{margin:8px 0 0;font-size:14px}
+.container{
+ max-width:550px;
+ margin:20px auto;
+ padding:12px;
+}
+.card{
+ background:white;
+ border-radius:22px;
+ padding:20px;
+ margin-bottom:16px;
+ box-shadow:0 5px 20px #6550a322;
+}
+h2{text-align:center;margin:5px 0 15px}
+.stats{
+ display:flex;justify-content:space-around;
+ text-align:center;gap:8px;
+}
+.stat{
+ background:#f1edff;
+ padding:12px 5px;
+ border-radius:14px;
+ flex:1;
+}
+.stat b{display:block;font-size:22px;color:#7049e8}
+.stat small{font-size:12px}
+select{
+ width:100%;padding:14px;
+ border:2px solid #ded5ff;
+ border-radius:12px;font-size:16px;
+ margin:7px 0;
+ background:white;
+}
+button{
+ border:0;border-radius:13px;
+ padding:14px;
+ font-size:16px;font-weight:bold;
+ cursor:pointer;
+}
+.primary{
+ background:#7049e8;color:white;
+ width:100%;margin-top:12px;
+}
+.option{
+ width:100%;margin:7px 0;
+ background:#f2efff;color:#35265e;
+ border:2px solid #e3dcff;
+ text-align:left;
+}
+.option:disabled{opacity:1}
+.option.correct{background:#d5f8df;border-color:#22b65b;color:#12642e}
+.option.wrong{background:#ffe0e0;border-color:#e94d4d;color:#9b2020}
+.question{
+ text-align:center;font-size:36px;
+ font-weight:bold;padding:25px 5px;
+ color:#7049e8;
+}
+#feedback{
+ text-align:center;font-size:17px;
+ font-weight:bold;min-height:28px;
+ margin:12px 0;
+}
+.progress{
+ background:#eee;border-radius:20px;
+ height:10px;overflow:hidden;margin-top:12px;
+}
+#bar{height:100%;width:0%;background:#7049e8;transition:.3s}
+.hidden{display:none}
+.footer{text-align:center;font-size:12px;color:#777;padding:15px}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🌈 Math Masti World</h1>
+<p>Learn Maths • Play Games • Become a Superstar!</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2>🎮 Choose Your Game</h2>
+
+<label>Math Topic</label>
+<select id="topic">
+<option value="add">➕ Addition</option>
+<option value="sub">➖ Subtraction</option>
+<option value="mul">✖️ Multiplication</option>
+<option value="div">➗ Division</option>
+<option value="mix">🌟 Mixed Maths</option>
+</select>
+
+<label>Difficulty Level</label>
+<select id="level">
+<option value="easy">Easy</option>
+<option value="medium">Medium</option>
+<option value="hard">Hard</option>
+</select>
+
+<button class="primary" onclick="startGame()">🚀 Start Playing</button>
+</div>
+
+<div class="card hidden" id="game">
+
+<div class="stats">
+<div class="stat"><b id="score">0</b><small>⭐ Score</small></div>
+<div class="stat"><b id="number">1/10</b><small>📝 Question</small></div>
+<div class="stat"><b id="streak">0</b><small>🔥 Streak</small></div>
+</div>
+
+<div class="progress"><div id="bar"></div></div>
+
+<div class="question" id="question">5 + 5 = ?</div>
+
+<div id="options"></div>
+
+<div id="feedback">Choose the correct answer!</div>
+
+<button class="primary hidden" id="next" onclick="nextQuestion()">Next Question ➜</button>
+
+<button class="primary" onclick="speakQuestion()" style="background:#16a5b5">🔊 Hear Question</button>
+
+</div>
+
+<div class="card hidden" id="result">
+<h2>🏆 Amazing Superstar!</h2>
+<div style="text-align:center;font-size:55px">🎉🌟🎉</div>
+<h2 id="finalScore">Your Score: 0</h2>
+<p id="message" style="text-align:center"></p>
+<button class="primary" onclick="startGame()">🔄 Play Again</button>
+<button class="primary" onclick="home()" style="background:#16a5b5">🏠 Home</button>
+</div>
+
+<div class="card">
+<h2>💡 Math Masti Tips</h2>
+<p>🌟 Practice every day.</p>
+<p>🌟 Think carefully before answering.</p>
+<p>🌟 Mistakes help you learn!</p>
+</div>
+
+</div>
+
+<div class="footer">
+Made with ❤️ for Little Math Champions<br>
+Math Masti World © 2026
+</div>
+
+<script>
+let current=0;
+let score=0;
+let streak=0;
+let answer=0;
+let locked=false;
+let questions=[];
+let currentQuestion=null;
+
+const $ = id => document.getElementById(id);
+
+function random(min,max){
+ return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function generateQuestion(){
+ let level=$("level").value;
+ let topic=$("topic").value;
+ let max=level==="easy"?10:level==="medium"?50:100;
+ let op=topic==="mix"?["add","sub","mul","div"][random(0,3)]:topic;
+
+ let a,b,q,ans;
+
+ if(op==="add"){
+  a=random(1,max);b=random(1,max);
+  ans=a+b;q=a+" + "+b;
+ }
+ else if(op==="sub"){
+  a=random(1,max);b=random(1,a);
+  ans=a-b;q=a+" − "+b;
+ }
+ else if(op==="mul"){
+  let m=level==="easy"?10:level==="medium"?20:50;
+  a=random(1,m);b=random(1,10);
+  ans=a*b;q=a+" × "+b;
+ }
+ else{
+  b=random(1,10);
+  ans=random(1,level==="hard"?50:20);
+  a=ans*b;
+  q=a+" ÷ "+b;
+ }
+
+ return {q,ans};
+}
+
+function speak(text){
+ if(!("speechSynthesis" in window))return;
+ speechSynthesis.cancel();
+ let msg=new SpeechSynthesisUtterance(text);
+ msg.lang="en-US";
+ msg.rate=.9;
+ speechSynthesis.speak(msg);
+}
+
+function startGame(){
+ speechSynthesis.cancel();
+ current=0;score=0;streak=0;
+ $("score").textContent=0;
+ $("streak").textContent=0;
+ $("result").classList.add("hidden");
+ $("game").classList.remove("hidden");
+ $("bar").style.width="0%";
+ showQuestion();
+}
+
+function showQuestion(){
+ locked=false;
+ $("next").classList.add("hidden");
+ $("feedback").textContent="Choose the correct answer! 😊";
+ $("number").textContent=(current+1)+"/10";
+
+ currentQuestion=generateQuestion();
+ answer=currentQuestion.ans;
+
+ $("question").textContent=currentQuestion.q+" = ?";
+
+ let values=new Set([answer]);
+
+ while(values.size<4){
+  let n=answer+random(-10,10);
+  if(n>=0 && n!==answer)values.add(n);
+ }
+
+ let choices=[...values].sort(()=>Math.random()-.5);
+ let area=$("options");
+ area.innerHTML="";
+
+ choices.forEach((value,i)=>{
+  let btn=document.createElement("button");
+  btn.className="option";
+  btn.textContent=String.fromCharCode(65+i)+".  "+value;
+  btn.onclick=()=>checkAnswer(value,btn);
+  area.appendChild(btn);
+ });
+}
+
+function speakQuestion(){
+ if(!currentQuestion)return;
+ speak(currentQuestion.q+" equals what?");
+}
+
+function checkAnswer(value,button){
+ if(locked)return;
+ locked=true;
+
+ let buttons=document.querySelectorAll(".option");
+ buttons.forEach(btn=>btn.disabled=true);
+
+ if(value===answer){
+  score+=10;
+  streak++;
+  button.classList.add("correct");
+  $("feedback").textContent=["Awesome! 🌟","Superstar! 🎉","Brilliant! 🚀","You are amazing! ❤️"][random(0,3)];
+  speak("Awesome! Great job!");
+ }else{
+  streak=0;
+  button.classList.add("wrong");
+  $("feedback").textContent="Good try! Correct answer: "+answer+" 😊";
+  speak("Good try! The correct answer is "+answer);
+  buttons.forEach(btn=>{
+   if(Number(btn.textContent.split(". ")[1])===answer)
+    btn.classList.add("correct");
+  });
+ }
+
+ $("score").textContent=score;
+ $("streak").textContent=streak;
+ $("bar").style.width=((current+1)*10)+"%";
+ $("next").classList.remove("hidden");
+}
+
+function nextQuestion(){
+ current++;
+ if(current>=10){
+  showResult();
+ }else{
+  showQuestion();
+ }
+}
+
+function showResult(){
+ $("game").classList.add("hidden");
+ $("result").classList.remove("hidden");
+ $("finalScore").textContent="⭐ Your Score: "+score+"/100";
+
+ let msg=score===100?"Perfect! You are a Math Superstar! 🏆":
+ score>=70?"Fantastic work! Keep shining! 🌟":
+ score>=40?"Good effort! Practice makes you better! 💪":
+ "Keep practising! You can do it! ❤️";
+
+ $("message").textContent=msg;
+ speak(msg);
+}
+
+function home(){
+ speechSynthesis.cancel();
+ $("game").classList.add("hidden");
+ $("result").classList.add("hidden");
+}
+
+</script>
+</body>
+</html>
