@@ -3,492 +3,330 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#7049e8">
-<meta name="description" content="Math Masti World - Fun maths learning games for kids.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#7548e8">
 <title>Math Masti World</title>
-
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;
- font-family:Arial,sans-serif;
- background:linear-gradient(135deg,#eee8ff,#dff5ff);
- color:#29234b;
- min-height:100vh;
+body{margin:0;font-family:'Trebuchet MS',Arial,sans-serif;color:#35265d}
+#app{min-height:100vh;background:linear-gradient(135deg,#ffd9ec,#d9d5ff,#c7f4ff);transition:background .5s}
+.screen{max-width:650px;margin:auto;min-height:100vh;padding:18px 16px 35px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:22px;font-weight:900;color:#6038ae}
+.pill{background:white;padding:9px 14px;border-radius:30px;font-weight:bold;box-shadow:0 4px 0 #d6c7f2}
+button{border:0;cursor:pointer;font-family:inherit}
+.hero{text-align:center;padding:20px 0}
+.mascot{font-size:75px}
+.hero h1{font-size:clamp(36px,10vw,55px);margin:5px;color:#7042c6;text-shadow:3px 3px white}
+.hero p{font-size:17px;font-weight:bold;color:#76629b}
+.heading{text-align:center;font-size:22px;font-weight:900;margin:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.game{
+ height:115px;border-radius:27px;color:white;font-size:21px;font-weight:900;
+ box-shadow:0 7px 0 #55408038;display:flex;flex-direction:column;
+ align-items:center;justify-content:center;gap:5px
 }
-header{
- background:linear-gradient(120deg,#7049e8,#a04de8);
- color:white;text-align:center;
- padding:25px 12px;
- border-radius:0 0 28px 28px;
- box-shadow:0 5px 18px #7049e844;
-}
-header h1{margin:0;font-size:29px}
-header p{margin:8px 0 0;font-size:14px}
-.container{max-width:550px;margin:20px auto;padding:12px}
-.card{
- background:white;border-radius:22px;
- padding:20px;margin-bottom:16px;
- box-shadow:0 5px 20px #6550a322;
-}
-h2{text-align:center;margin:5px 0 16px}
-.welcome{text-align:center;padding:8px}
-.welcome .emoji{font-size:55px}
-.welcome h2{font-size:24px;color:#7049e8}
-.welcome p{color:#777;line-height:1.5}
-.stats{display:flex;justify-content:space-around;gap:8px;text-align:center}
-.stat{background:#f1edff;padding:13px 5px;border-radius:14px;flex:1}
-.stat b{display:block;font-size:23px;color:#7049e8}
-.stat small{font-size:12px}
-label{display:block;font-weight:bold;margin-top:13px}
-select{
- width:100%;padding:14px;border:2px solid #ded5ff;
- border-radius:12px;font-size:16px;margin:7px 0;
- background:white;color:#29234b;
-}
-button{
- border:0;border-radius:13px;padding:14px;
- font-size:16px;font-weight:bold;cursor:pointer;
- transition:transform .15s,opacity .15s;
-}
-button:active{transform:scale(.97)}
-button:focus-visible{outline:3px solid #16a5b5;outline-offset:3px}
-.primary{background:#7049e8;color:white;width:100%;margin-top:12px}
-.secondary{background:#16a5b5;color:white;width:100%;margin-top:10px}
-.option{
- width:100%;margin:7px 0;background:#f2efff;
- color:#35265e;border:2px solid #e3dcff;text-align:left;
-}
-.option:disabled{opacity:1;cursor:default}
-.option.correct{background:#d5f8df;border-color:#22b65b;color:#12642e}
-.option.wrong{background:#ffe0e0;border-color:#e94d4d;color:#9b2020}
-.question{text-align:center;font-size:clamp(32px,9vw,42px);
- font-weight:bold;padding:25px 5px;color:#7049e8}
-#feedback{text-align:center;font-size:17px;font-weight:bold;min-height:42px;margin:12px 0;line-height:1.4}
-.progress{background:#eee;border-radius:20px;height:11px;overflow:hidden;margin-top:14px}
-#bar{height:100%;width:0%;background:linear-gradient(90deg,#7049e8,#ed64c5);transition:.3s}
-.hidden{display:none!important}
-.game-top{display:flex;justify-content:space-between;align-items:center}
-.game-top button{background:#f1edff;color:#7049e8;padding:9px 13px}
-.result-emoji{text-align:center;font-size:65px;margin:15px}
-.result-score{text-align:center;font-size:30px;color:#7049e8;font-weight:bold}
-.result-message{text-align:center;line-height:1.6;color:#555}
-.tip{background:#f8f5ff;padding:12px;border-radius:13px;margin:9px 0;line-height:1.5}
-.footer{text-align:center;font-size:12px;color:#777;padding:18px}
-#bestLabel{color:#16a5b5;font-weight:bold;text-align:center;margin-top:12px}
-@media(max-width:380px){
- header h1{font-size:25px}
- .card{padding:15px}
- .stat b{font-size:20px}
-}
+.game span{font-size:37px}
+.game:active,.start:active,.next:active{transform:translateY(4px)}
+.purple{background:linear-gradient(140deg,#b18aff,#7044df)}
+.pink{background:linear-gradient(140deg,#ff9ec9,#ed4c91)}
+.blue{background:linear-gradient(140deg,#6bdcff,#3688e9)}
+.orange{background:linear-gradient(140deg,#ffc46f,#ff8045)}
+.green{background:linear-gradient(140deg,#7ee8b0,#21ad7a)}
+.yellow{background:linear-gradient(140deg,#ffe77d,#f2b42b)}
+.card{background:#ffffffdf;border:3px solid white;border-radius:28px;padding:17px;margin-top:18px;box-shadow:0 8px 20px #7053a522}
+.card h3{text-align:center;margin:0 0 12px}
+.levels{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.level{padding:10px 17px;border-radius:20px;background:#eee6ff;color:#6745b2;font-weight:bold}
+.level.active{background:#7548e8;color:white}
+.start,.next{width:100%;margin-top:18px;padding:15px;border-radius:25px;color:white;font-size:22px;font-weight:900;background:linear-gradient(100deg,#ff80b5,#ff9d50);box-shadow:0 7px 0 #dc568b}
+.footer{text-align:center;margin-top:20px;font-weight:bold;color:#786a9c}
+
+/* Quiz */
+#quizScreen,#resultScreen{display:none}
+.quiztop{display:flex;justify-content:space-between;align-items:center;gap:7px}
+.small{background:white;border-radius:25px;padding:9px 12px;font-weight:900;box-shadow:0 4px 0 #d8c9f0}
+.progressbg{height:12px;background:#ffffffa8;border-radius:20px;margin:17px 0;overflow:hidden}
+.progress{height:100%;width:10%;background:linear-gradient(90deg,#ff85b5,#ffca55);transition:width .4s}
+.count{text-align:center;font-weight:900;color:#7655aa}
+.questioncard{margin:18px 0 12px;padding:18px 10px;background:#ffffffdf;border:4px solid white;border-radius:30px;text-align:center;box-shadow:0 8px 0 #7960a522}
+.qemoji{font-size:38px}
+.questioncard h2{margin:5px;color:#7557aa}
+.question{font-size:clamp(42px,12vw,65px);font-weight:1000;color:#5e35b1;overflow-wrap:anywhere}
+.decor{text-align:center;font-size:26px;letter-spacing:7px;margin:12px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.option{height:110px;border:4px solid white;color:white;font-size:35px;font-weight:1000;box-shadow:0 7px 0 #55408035;text-shadow:0 2px 2px #0002}
+.option:nth-child(1){background:linear-gradient(140deg,#ff9ec9,#e94a92);border-radius:28px 28px 28px 7px}
+.option:nth-child(2){background:linear-gradient(140deg,#70dcff,#3489eb);border-radius:50%}
+.option:nth-child(3){background:linear-gradient(140deg,#ffd071,#ff8647);border-radius:28px 7px 28px 28px}
+.option:nth-child(4){background:linear-gradient(140deg,#84e9b4,#21ad7c);border-radius:28px}
+.option.correct{background:linear-gradient(140deg,#6ce5a5,#17a96c)!important;border-color:#fff28a;transform:scale(1.04)}
+.option.wrong{background:linear-gradient(140deg,#ff99a5,#df4560)!important;animation:shake .3s}
+.option:disabled{cursor:default}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.feedback{text-align:center;min-height:43px;padding:9px 2px;font-size:19px;font-weight:900;color:#7048b2}
+.next{background:linear-gradient(100deg,#8d6bef,#5b40cc);box-shadow:0 7px 0 #45309b}
+.next:disabled{opacity:.45;cursor:not-allowed}
+
+/* Result */
+#resultScreen{text-align:center;padding-top:45px}
+.trophy{font-size:100px}
+.resultcard{background:#ffffffdf;border:4px solid white;border-radius:32px;padding:23px 12px;margin:17px 0;box-shadow:0 8px 0 #7960a522}
+.resultcard h1{font-size:34px;color:#7044b6}
+.score{font-size:68px;font-weight:1000;color:#f18b3c}
+.stars{font-size:36px}
+.resultmsg{font-size:20px;font-weight:bold;color:#735b9e}
+.secondary{width:100%;padding:14px;border-radius:23px;background:white;color:#6744b3;font-size:19px;font-weight:900;margin-top:13px;box-shadow:0 5px 0 #d7c9ee}
+@media(max-width:380px){.screen{padding:13px 12px}.option{height:95px}.options{gap:10px}}
 </style>
 </head>
-
 <body>
+<div id="app">
+<main class="screen">
 
-<header>
-<h1>🌈 Math Masti World</h1>
-<p>Learn Maths • Play Games • Become a Superstar!</p>
-</header>
-
-<main class="container">
-
-<!-- HOME -->
 <section id="homeScreen">
-
-<div class="card welcome">
-<div class="emoji">🚀🧮</div>
-<h2>Welcome, Little Champion!</h2>
-<p>Ready for a fun maths adventure? Play, learn and earn stars!</p>
-</div>
-
-<div class="card">
-<h2>🏆 Your Achievements</h2>
-<div class="stats">
- <div class="stat"><b id="totalGames">0</b><small>🎮 Games</small></div>
- <div class="stat"><b id="bestScore">0</b><small>⭐ Best Score</small></div>
- <div class="stat"><b id="totalStars">0</b><small>🌟 Stars</small></div>
-</div>
-</div>
-
-<div class="card">
-<h2>🎮 Choose Your Game</h2>
-
-<label for="topic">Math Topic</label>
-<select id="topic">
-<option value="add">➕ Addition</option>
-<option value="sub">➖ Subtraction</option>
-<option value="mul">✖️ Multiplication</option>
-<option value="div">➗ Division</option>
-<option value="mix">🌟 Mixed Maths</option>
-</select>
-
-<label for="level">Difficulty Level</label>
-<select id="level">
-<option value="easy">😊 Easy</option>
-<option value="medium">🚀 Medium</option>
-<option value="hard">🔥 Hard</option>
-</select>
-
-<button class="primary" onclick="startGame()">🚀 Start Playing</button>
-<p id="bestLabel">Your next adventure awaits! 🌟</p>
-</div>
-
-<div class="card">
-<h2>💡 Math Masti Tips</h2>
-<div class="tip">🌟 Practice a little every day.</div>
-<div class="tip">🧠 Think carefully before answering.</div>
-<div class="tip">❤️ Mistakes help you learn!</div>
-<div class="tip">🏆 Never give up, Superstar!</div>
-</div>
-
+ <div class="top">
+  <div class="logo">🌈 Math Masti World</div>
+  <button class="pill" onclick="toggleLanguage()" id="langBtn">हिंदी</button>
+ </div>
+ <div class="hero">
+  <div class="mascot">🦄</div>
+  <h1>Math Masti World!</h1>
+  <p id="tagline">Learn Maths • Play Games • Have Fun!</p>
+ </div>
+ <div class="heading" id="chooseTitle">🎮 Choose Your Maths Game</div>
+ <div class="grid">
+  <button class="game purple" onclick="chooseGame('add')"><span>➕</span><label id="addLabel">Addition</label></button>
+  <button class="game pink" onclick="chooseGame('sub')"><span>➖</span><label id="subLabel">Subtraction</label></button>
+  <button class="game blue" onclick="chooseGame('mul')"><span>✖️</span><label id="mulLabel">Multiplication</label></button>
+  <button class="game orange" onclick="chooseGame('div')"><span>➗</span><label id="divLabel">Division</label></button>
+ </div>
+ <div class="card">
+  <h3 id="ageTitle">🧒 Choose Your Level</h3>
+  <div class="levels">
+   <button class="level active" onclick="setAge(5,this)">Age 5</button>
+   <button class="level" onclick="setAge(6,this)">Age 6</button>
+   <button class="level" onclick="setAge(7,this)">Age 7</button>
+   <button class="level" onclick="setAge(8,this)">Age 8</button>
+  </div>
+  <button class="start" id="startBtn" onclick="startGame()">🚀 START PLAYING</button>
+ </div>
+ <div class="footer">⭐ Fun Learning For Everyone ⭐</div>
 </section>
 
-<!-- GAME -->
-<section id="gameScreen" class="hidden">
-
-<div class="card">
-
-<div class="game-top">
-<strong>🌈 Math Challenge</strong>
-<button onclick="home()">🏠 Home</button>
-</div>
-
-<div class="stats">
- <div class="stat"><b id="score">0</b><small>⭐ Score</small></div>
- <div class="stat"><b id="number">1/10</b><small>📝 Question</small></div>
- <div class="stat"><b id="streak">0</b><small>🔥 Streak</small></div>
-</div>
-
-<div class="progress">
-<div id="bar"></div>
-</div>
-
-<div class="question" id="question">5 + 5 = ?</div>
-
-<div id="options"></div>
-
-<div id="feedback" aria-live="polite">Choose the correct answer! 😊</div>
-
-<button class="secondary" onclick="speakQuestion()">🔊 Hear Question</button>
-
-<button class="primary hidden" id="next" onclick="nextQuestion()">Next Question ➜</button>
-
-</div>
+<section id="quizScreen">
+ <div class="quiztop">
+  <button class="small" onclick="goHome()">🏠 Home</button>
+  <div class="small" id="scorePill">⭐ 0</div>
+  <div class="small" id="agePill">Age 5</div>
+ </div>
+ <div class="progressbg"><div class="progress" id="progress"></div></div>
+ <div class="count" id="questionCount">Question 1 of 10</div>
+ <div class="questioncard">
+  <div class="qemoji" id="qEmoji">🌟</div>
+  <h2 id="questionLabel">Solve this!</h2>
+  <div class="question" id="questionText">2 + 3 = ?</div>
+ </div>
+ <div class="decor" id="decor">🌈 ⭐ 🎈</div>
+ <div class="options" id="options"></div>
+ <div class="feedback" id="feedback">Choose the correct answer!</div>
+ <button class="next" id="nextBtn" onclick="nextQuestion()" disabled>Next Question ➜</button>
 </section>
 
-<!-- RESULT -->
-<section id="resultScreen" class="hidden">
-
-<div class="card">
-<h2>🏆 Amazing Superstar!</h2>
-<div class="result-emoji" id="resultEmoji">🎉🌟🎉</div>
-<div class="result-score" id="finalScore">0/100</div>
-<p class="result-message" id="message"></p>
-
-<div class="stats">
- <div class="stat"><b id="correctCount">0</b><small>✅ Correct</small></div>
- <div class="stat"><b id="wrongCount">0</b><small>❌ Incorrect</small></div>
- <div class="stat"><b id="earnedStars">0</b><small>⭐ Stars</small></div>
-</div>
-
-<button class="primary" onclick="startGame()">🔄 Play Again</button>
-<button class="secondary" onclick="home()">🏠 Home</button>
-</div>
-
+<section id="resultScreen">
+ <div class="trophy" id="trophy">🏆</div>
+ <div class="resultcard">
+  <h1 id="resultHeading">Amazing Job!</h1>
+  <div class="score" id="finalScore">10/10</div>
+  <div class="stars" id="finalStars">⭐⭐⭐⭐⭐</div>
+  <div class="resultmsg" id="resultMessage">You are a Maths Superstar!</div>
+ </div>
+ <button class="start" onclick="startGame()">🔄 Play Again</button>
+ <button class="secondary" onclick="goHome()">🏠 Back to Home</button>
+ <button class="secondary" onclick="shareScore()">📤 Share My Score</button>
 </section>
 
 </main>
-
-<div class="footer">
-Made with ❤️ for Little Math Champions<br>
-Math Masti World © 2026
 </div>
 
 <script>
-let current=0;
-let score=0;
-let streak=0;
-let answer=0;
-let locked=false;
-let currentQuestion=null;
-let correct=0;
-let wrong=0;
+let lang='en',age=5,game='add',questions=[],current=0,score=0,answered=false;
 
-const $=id=>document.getElementById(id);
+const themes=[
+ ['linear-gradient(135deg,#ffe0ef,#e4d5ff,#c9f6ff)','🌈','🌈 ⭐ 🎈'],
+ ['linear-gradient(135deg,#fff0c9,#ffd7e8,#d9e9ff)','🦋','🦋 🌸 ✨'],
+ ['linear-gradient(135deg,#c8f5ff,#d8d1ff,#ffe0ef)','🚀','🚀 🌟 ☁️'],
+ ['linear-gradient(135deg,#e2ffd7,#fff0bd,#ffd9eb)','🐸','🍀 🌼 ⭐'],
+ ['linear-gradient(135deg,#ffe1c5,#ffd7ec,#d7e8ff)','🦄','🦄 💖 ✨'],
+ ['linear-gradient(135deg,#d9e4ff,#f9d9ff,#d1fff0)','🎈','🎈 🎉 ⭐'],
+ ['linear-gradient(135deg,#fff2b8,#ffd9df,#d9eaff)','🐻','🐻 🍭 🌈'],
+ ['linear-gradient(135deg,#d5fff0,#dce3ff,#ffe2f2)','🐬','🐬 💎 ⭐'],
+ ['linear-gradient(135deg,#ffe0b8,#fbd9ff,#d8f7ff)','🦁','🦁 🌟 🎊'],
+ ['linear-gradient(135deg,#e8d9ff,#d2faff,#fff0c9)','🎁','🎁 🎉 🌈']
+];
 
-function random(min,max){
- return Math.floor(Math.random()*(max-min+1))+min;
-}
+const words={
+ en:{
+  tagline:'Learn Maths • Play Games • Have Fun!',
+  choose:'🎮 Choose Your Maths Game',age:'🧒 Choose Your Level',
+  add:'Addition',sub:'Subtraction',mul:'Multiplication',div:'Division',
+  start:'🚀 START PLAYING',solve:'Solve this!',next:'Next Question ➜',
+  chooseAnswer:'Choose the correct answer!',
+  correct:['🎉 Fantastic! You got it!','⭐ Super Star! Correct!','🥳 Brilliant! Well done!','🚀 Amazing work!'],
+  wrong:'😊 Good try! The correct answer is ',
+  question:'Question',of:'of',result:'Amazing Job!',
+  message:['Keep practising, Superstar!','Great work! You are improving!','Wonderful! You are a Maths Star!','WOW! You are a Maths Champion!']
+ },
+ hi:{
+  tagline:'गणित सीखें • खेलें • मज़े करें!',
+  choose:'🎮 अपना गणित का खेल चुनें',age:'🧒 अपना स्तर चुनें',
+  add:'जोड़',sub:'घटाव',mul:'गुणा',div:'भाग',
+  start:'🚀 खेल शुरू करें',solve:'हल कीजिए!',next:'अगला सवाल ➜',
+  chooseAnswer:'सही उत्तर चुनिए!',
+  correct:['🎉 बहुत बढ़िया! सही जवाब!','⭐ शानदार! शाबाश!','🥳 कमाल कर दिया!','🚀 गज़ब!'],
+  wrong:'😊 अच्छी कोशिश! सही उत्तर है ',
+  question:'सवाल',of:'में से',result:'शानदार प्रदर्शन!',
+  message:['अभ्यास करते रहिए, चैंपियन!','बहुत अच्छा! आगे बढ़ते रहिए!','वाह! आप Maths Star हैं!','कमाल! आप Maths Champion हैं!']
+ }
+};
 
-function getData(){
- try{
-  return JSON.parse(localStorage.getItem("mathMastiData")) ||
-  {games:0,best:0,stars:0};
- }catch(e){
-  return {games:0,best:0,stars:0};
+function toggleLanguage(){
+ lang=lang==='en'?'hi':'en';
+ let w=words[lang];
+ document.getElementById('langBtn').textContent=lang==='en'?'हिंदी':'English';
+ document.getElementById('tagline').textContent=w.tagline;
+ document.getElementById('chooseTitle').textContent=w.choose;
+ document.getElementById('ageTitle').textContent=w.age;
+ document.getElementById('addLabel').textContent=w.add;
+ document.getElementById('subLabel').textContent=w.sub;
+ document.getElementById('mulLabel').textContent=w.mul;
+ document.getElementById('divLabel').textContent=w.div;
+ document.getElementById('startBtn').textContent=w.start;
+ if(document.getElementById('quizScreen').style.display==='block'){
+  document.getElementById('questionLabel').textContent=w.solve;
+  document.getElementById('nextBtn').textContent=current===9?(lang==='hi'?'परिणाम देखें 🏆':'See Result 🏆'):w.next;
+  if(!answered)document.getElementById('feedback').textContent=w.chooseAnswer;
+  document.getElementById('questionCount').textContent=w.question+' '+(current+1)+' '+w.of+' 10';
  }
 }
 
-function saveData(data){
- try{
-  localStorage.setItem("mathMastiData",JSON.stringify(data));
- }catch(e){}
+function chooseGame(g){
+ game=g;
+ document.querySelectorAll('.game').forEach(b=>b.style.outline='none');
+ event.currentTarget.style.outline='4px solid white';
 }
-
-function updateDashboard(){
- let d=getData();
- $("totalGames").textContent=d.games;
- $("bestScore").textContent=d.best;
- $("totalStars").textContent=d.stars;
+function setAge(n,btn){
+ age=n;
+ document.querySelectorAll('.level').forEach(x=>x.classList.remove('active'));
+ btn.classList.add('active');
 }
-
-function generateQuestion(){
- let level=$("level").value;
- let topic=$("topic").value;
-
- let max=level==="easy"?10:level==="medium"?50:100;
- let op=topic==="mix"
- ?["add","sub","mul","div"][random(0,3)]
- :topic;
-
- let a,b,ans,q;
-
- if(op==="add"){
-  a=random(1,max);
-  b=random(1,max);
-  ans=a+b;
-  q=a+" + "+b;
+function rand(n){return Math.floor(Math.random()*n)}
+function makeQuestion(){
+ let a,b,answer,op;
+ const max=age===5?10:age===6?20:age===7?50:100;
+ if(game==='add'){a=rand(max)+1;b=rand(max)+1;answer=a+b;op='+'}
+ else if(game==='sub'){a=rand(max)+1;b=rand(a)+1;answer=a-b;op='−'}
+ else if(game==='mul'){
+  let limit=age===5?5:age===6?6:age===7?10:12;
+  a=rand(limit)+1;b=rand(limit)+1;answer=a*b;op='×'
+ }else{
+  b=rand(age===5?4:age===6?6:age===7?10:12)+1;
+  answer=rand(age===5?5:age===6?8:age===7?10:12)+1;
+  a=b*answer;op='÷'
  }
- else if(op==="sub"){
-  a=random(1,max);
-  b=random(1,a);
-  ans=a-b;
-  q=a+" − "+b;
- }
- else if(op==="mul"){
-  let m=level==="easy"?10:level==="medium"?20:50;
-  a=random(1,m);
-  b=random(1,level==="hard"?20:10);
-  ans=a*b;
-  q=a+" × "+b;
- }
- else{
-  b=random(1,10);
-  ans=random(1,level==="hard"?50:20);
-  a=ans*b;
-  q=a+" ÷ "+b;
- }
-
- return {q,ans};
+ return {a,b,answer,op};
 }
-
-function makeOptions(correctAnswer){
- let values=new Set([correctAnswer]);
-
- while(values.size<4){
-  let offset=random(1,Math.max(10,Math.abs(correctAnswer)+5));
-  let n=correctAnswer+(Math.random()<0.5?-offset:offset);
-
-  if(n>=0 && n!==correctAnswer){
-   values.add(n);
+function buildQuestions(){
+ questions=[];
+ for(let i=0;i<10;i++){
+  let q=makeQuestion(),opts=new Set([q.answer]);
+  while(opts.size<4){
+   let delta=rand(9)+1;
+   let v=Math.random()<.5?q.answer+delta:q.answer-delta;
+   if(v>=0 && v!==q.answer)opts.add(v);
   }
+  questions.push({...q,options:[...opts].sort(()=>Math.random()-.5)});
  }
-
- return [...values].sort(()=>Math.random()-.5);
 }
-
-function speak(text){
- if(!("speechSynthesis" in window))return;
-
- try{
-  window.speechSynthesis.cancel();
-  let msg=new SpeechSynthesisUtterance(text);
-  msg.lang="en-US";
-  msg.rate=0.9;
-  msg.pitch=1.15;
-  window.speechSynthesis.speak(msg);
- }catch(e){}
-}
-
 function startGame(){
- if("speechSynthesis" in window){
-  speechSynthesis.cancel();
- }
-
- current=0;
- score=0;
- streak=0;
- correct=0;
- wrong=0;
-
- $("score").textContent="0";
- $("streak").textContent="0";
- $("bar").style.width="0%";
-
- $("homeScreen").classList.add("hidden");
- $("resultScreen").classList.add("hidden");
- $("gameScreen").classList.remove("hidden");
-
- showQuestion();
- window.scrollTo(0,0);
+ buildQuestions();current=0;score=0;
+ document.getElementById('homeScreen').style.display='none';
+ document.getElementById('resultScreen').style.display='none';
+ document.getElementById('quizScreen').style.display='block';
+ showQuestion();window.scrollTo(0,0);
 }
-
 function showQuestion(){
- locked=false;
-
- $("next").classList.add("hidden");
- $("feedback").textContent="Choose the correct answer! 😊";
- $("number").textContent=(current+1)+"/10";
-
- currentQuestion=generateQuestion();
- answer=currentQuestion.ans;
-
- $("question").textContent=currentQuestion.q+" = ?";
-
- let choices=makeOptions(answer);
- let area=$("options");
- area.innerHTML="";
-
- choices.forEach((value,i)=>{
-  let btn=document.createElement("button");
-  btn.className="option";
-  btn.textContent=String.fromCharCode(65+i)+".  "+value;
-  btn.onclick=()=>checkAnswer(value,btn);
-  area.appendChild(btn);
+ answered=false;
+ let q=questions[current],t=themes[current%themes.length],w=words[lang];
+ document.getElementById('app').style.background=t[0];
+ document.getElementById('qEmoji').textContent=t[1];
+ document.getElementById('decor').textContent=t[2];
+ document.getElementById('questionText').textContent=q.a+' '+q.op+' '+q.b+' = ?';
+ document.getElementById('questionLabel').textContent=w.solve;
+ document.getElementById('questionCount').textContent=w.question+' '+(current+1)+' '+w.of+' 10';
+ document.getElementById('scorePill').textContent='⭐ '+score;
+ document.getElementById('agePill').textContent='Age '+age;
+ document.getElementById('progress').style.width=((current+1)*10)+'%';
+ document.getElementById('feedback').textContent=w.chooseAnswer;
+ document.getElementById('nextBtn').disabled=true;
+ document.getElementById('nextBtn').textContent=current===9?(lang==='hi'?'परिणाम देखें 🏆':'See Result 🏆'):w.next;
+ let container=document.getElementById('options');
+ container.innerHTML='';
+ q.options.forEach(v=>{
+  let btn=document.createElement('button');
+  btn.className='option';btn.textContent=v;
+  btn.onclick=()=>checkAnswer(v,btn);
+  container.appendChild(btn);
  });
 }
-
-function speakQuestion(){
- if(!currentQuestion)return;
- speak(currentQuestion.q+" equals what?");
-}
-
-function checkAnswer(value,button){
- if(locked)return;
-
- locked=true;
-
- let buttons=document.querySelectorAll(".option");
- buttons.forEach(btn=>btn.disabled=true);
-
- if(value===answer){
-  score+=10;
-  streak++;
-  correct++;
-
-  button.classList.add("correct");
-
-  let praise=[
-   "Awesome! 🌟",
-   "Superstar! 🎉",
-   "Brilliant! 🚀",
-   "You are amazing! ❤️",
-   "Fantastic work! 🏆",
-   "Wow! You nailed it! 🎊"
-  ];
-
-  let msg=praise[random(0,praise.length-1)];
-  $("feedback").textContent=msg;
-  speak(msg);
- }
- else{
-  streak=0;
-  wrong++;
-
-  button.classList.add("wrong");
-
-  $("feedback").textContent=
-   "Good try, Superstar! Correct answer: "+answer+" 😊";
-
-  speak("Good try! The correct answer is "+answer);
-
-  buttons.forEach(btn=>{
-   if(Number(btn.textContent.split(". ")[1])===answer){
-    btn.classList.add("correct");
-   }
-  });
- }
-
- $("score").textContent=score;
- $("streak").textContent=streak;
- $("bar").style.width=((current+1)*10)+"%";
-
- $("next").classList.remove("hidden");
-}
-
-function nextQuestion(){
- if(!locked)return;
-
- current++;
-
- if(current>=10){
-  showResult();
+function checkAnswer(value,btn){
+ if(answered)return;
+ answered=true;
+ let q=questions[current],w=words[lang];
+ document.querySelectorAll('.option').forEach(b=>{
+  b.disabled=true;
+  if(Number(b.textContent)===q.answer)b.classList.add('correct');
+ });
+ if(value===q.answer){
+  score++;
+  document.getElementById('feedback').textContent=w.correct[rand(w.correct.length)];
  }else{
-  showQuestion();
-  window.scrollTo(0,0);
+  btn.classList.add('wrong');
+  document.getElementById('feedback').textContent=w.wrong+q.answer;
  }
+ document.getElementById('scorePill').textContent='⭐ '+score;
+ document.getElementById('nextBtn').disabled=false;
 }
-
+function nextQuestion(){
+ if(!answered)return;
+ if(current<9){current++;showQuestion()}
+ else showResult();
+ window.scrollTo(0,0);
+}
 function showResult(){
- $("gameScreen").classList.add("hidden");
- $("resultScreen").classList.remove("hidden");
-
- let stars=Math.floor(score/20);
-
- $("finalScore").textContent=score+"/100";
- $("correctCount").textContent=correct;
- $("wrongCount").textContent=wrong;
- $("earnedStars").textContent=stars;
-
- let msg;
-
- if(score===100){
-  msg="Perfect! You are a Math Superstar! 🏆 Keep shining!";
-  $("resultEmoji").textContent="👑🏆🌟";
- }
- else if(score>=70){
-  msg="Fantastic work! You are doing amazing. Keep shining! 🌟";
-  $("resultEmoji").textContent="🎉🌈👏";
- }
- else if(score>=40){
-  msg="Good effort! Practice makes you stronger. You can do it! 💪";
-  $("resultEmoji").textContent="😊⭐💪";
- }
- else{
-  msg="Every champion starts somewhere! Keep practising, Superstar! ❤️";
-  $("resultEmoji").textContent="🌱❤️🌟";
- }
-
- $("message").textContent=msg;
-
- let d=getData();
- d.games++;
- d.best=Math.max(d.best,score);
- d.stars+=stars;
- saveData(d);
-
- speak(msg);
-
+ document.getElementById('quizScreen').style.display='none';
+ document.getElementById('resultScreen').style.display='block';
+ document.getElementById('app').style.background='linear-gradient(135deg,#fff0a8,#ffd6eb,#d6e7ff)';
+ document.getElementById('finalScore').textContent=score+'/10';
+ document.getElementById('resultHeading').textContent=words[lang].result;
+ document.getElementById('resultMessage').textContent=words[lang].message[score>=9?3:score>=7?2:score>=4?1:0];
+ document.getElementById('finalStars').textContent='⭐'.repeat(Math.max(1,Math.ceil(score/2)));
+ document.getElementById('trophy').textContent=score>=8?'🏆':score>=5?'🥇':'🌟';
  window.scrollTo(0,0);
 }
-
-function home(){
- if("speechSynthesis" in window){
-  speechSynthesis.cancel();
- }
-
- $("gameScreen").classList.add("hidden");
- $("resultScreen").classList.add("hidden");
- $("homeScreen").classList.remove("hidden");
-
- updateDashboard();
+function goHome(){
+ document.getElementById('quizScreen').style.display='none';
+ document.getElementById('resultScreen').style.display='none';
+ document.getElementById('homeScreen').style.display='block';
+ document.getElementById('app').style.background='linear-gradient(135deg,#ffd9ec,#d9d5ff,#c7f4ff)';
  window.scrollTo(0,0);
 }
-
-updateDashboard();
+function shareScore(){
+ let msg='🌈 Math Masti World 🌈\nI scored '+score+'/10 in Maths!\nCan you beat my score?';
+ if(navigator.share)navigator.share({title:'Math Masti World',text:msg}).catch(()=>{});
+ else if(navigator.clipboard)navigator.clipboard.writeText(msg).then(()=>alert('Score copied!'));
+ else prompt('Copy your score:',msg);
+}
 </script>
-
 </body>
 </html>
