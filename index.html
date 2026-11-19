@@ -4,535 +4,440 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#7956ed">
+<meta name="theme-color" content="#7049e8">
 <title>Math Masti World</title>
 
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;
- font-family:'Trebuchet MS',Arial,sans-serif;
- color:#29234b;
- background:#fff5dc;
- overflow-x:hidden;
+ margin:0;font-family:'Trebuchet MS',Arial,sans-serif;
+ color:#30234f;min-height:100vh;
+ background:linear-gradient(135deg,#ffdef2,#d9e7ff,#e5dcff);
 }
-button{font-family:inherit;cursor:pointer;border:0}
-#app{min-height:100vh;position:relative;overflow:hidden}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+header{
+ padding:17px;text-align:center;color:white;
+ background:linear-gradient(100deg,#7145e8,#fa59a7);
+ box-shadow:0 4px 15px #0002;
+}
+header h1{margin:0;font-size:27px}
+header p{margin:5px 0 0;font-size:13px}
+#app{max-width:650px;margin:auto;padding:17px}
 .page{
- min-height:100vh;
- padding:20px 16px 30px;
- display:flex;
- flex-direction:column;
- align-items:center;
- position:relative;
- overflow:hidden;
+ background:white;border-radius:27px;padding:23px 18px;
+ box-shadow:0 12px 35px #533b8225;
+ text-align:center;animation:appear .35s ease;
+}
+@keyframes appear{
+ from{opacity:0;transform:translateY(12px)}
+ to{opacity:1;transform:translateY(0)}
 }
 .hidden{display:none!important}
-
-/* HOME */
-.home{
- background:linear-gradient(145deg,#ffcf70,#ff8f9e 50%,#a77bff);
+h2{font-size:25px;margin:8px 0 15px}
+p{line-height:1.5}
+.small{font-size:13px;color:#777}
+input{
+ width:100%;padding:14px;border:2px solid #e4dafa;
+ border-radius:15px;margin:10px 0;outline:none;
 }
-.logo{
- font-size:clamp(30px,8vw,52px);
- font-weight:1000;
- color:white;
- text-align:center;
- text-shadow:3px 5px 0 #8050d7;
- margin:24px 0 5px;
- line-height:1.1;
+input:focus{border-color:#8b5cf6}
+.primary{
+ width:100%;padding:15px;border-radius:17px;
+ color:white;font-weight:bold;font-size:17px;
+ background:linear-gradient(100deg,#7549ec,#ed59a8);
+ box-shadow:0 5px 12px #9c67d555;margin-top:12px;
 }
-.logo span{color:#fff36a}
-.tagline{
- color:white;
- font-weight:bold;
- font-size:17px;
- text-align:center;
+.secondary{
+ padding:12px 18px;border-radius:14px;
+ background:#eee8ff;color:#6540b8;font-weight:bold;
 }
-.hero{
- font-size:105px;
- margin:15px 0;
- animation:bounce 2s infinite;
- filter:drop-shadow(0 9px 4px #0002);
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{
+ padding:17px 8px;border-radius:20px;
+ font-weight:bold;background:#f1eaff;
+ border:2px solid transparent;font-size:16px;
 }
-@keyframes bounce{
- 0%,100%{transform:translateY(0) rotate(-4deg)}
- 50%{transform:translateY(-13px) rotate(4deg)}
+.tile:nth-child(2){background:#ffe7f1}
+.tile:nth-child(3){background:#e0f8ff}
+.tile:nth-child(4){background:#fff0d8}
+.tile.selected{border-color:#7447e8;transform:scale(1.03)}
+.avatars{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.avatar{
+ font-size:31px;background:#f3edff;border-radius:17px;
+ padding:10px;border:2px solid transparent;
 }
-.home-card{
- background:#ffffffed;
- width:min(100%,430px);
- border-radius:30px;
- padding:25px 20px;
- text-align:center;
- box-shadow:0 12px 0 #9c60c9;
+.avatar.selected{border-color:#814eea;background:#e8dcff}
+.topline{display:flex;justify-content:space-between;gap:8px;
+ align-items:center;font-weight:bold;font-size:13px}
+.progress{height:10px;background:#eee;border-radius:20px;margin:14px 0}
+#bar{height:10px;width:0;background:linear-gradient(90deg,#7049e8,#fa61a9);border-radius:20px}
+.question-page{
+ min-height:440px;display:flex;flex-direction:column;
+ justify-content:center;position:relative;overflow:hidden;
 }
-.home-card h2{margin:0 0 8px;font-size:26px}
-.home-card p{color:#777;margin:5px 0 18px}
-.start-btn{
- background:linear-gradient(90deg,#ff557b,#ff8b36);
- color:white;
- font-size:23px;
- font-weight:1000;
- padding:17px 38px;
- border-radius:50px;
- box-shadow:0 7px 0 #c64a65;
- width:100%;
+.question-page:before,.question-page:after{
+ content:"";position:absolute;border-radius:50%;opacity:.15;
+ width:130px;height:130px;background:white;pointer-events:none;
 }
-.start-btn:active{transform:translateY(5px);box-shadow:0 2px 0 #c64a65}
-.home-info{
- display:flex;justify-content:center;gap:10px;
- margin-top:18px;flex-wrap:wrap
+.question-page:before{top:-45px;left:-40px}
+.question-page:after{bottom:-50px;right:-30px}
+.q1{background:linear-gradient(140deg,#fff0a8,#ffb9d7)}
+.q2{background:linear-gradient(140deg,#b9f2ff,#d9c5ff)}
+.q3{background:linear-gradient(140deg,#c8ffd9,#fff0ad)}
+.q4{background:linear-gradient(140deg,#ffc9bd,#e3c9ff)}
+.q5{background:linear-gradient(140deg,#d7d0ff,#ffc9e7)}
+.q6{background:linear-gradient(140deg,#baf4e9,#c8d5ff)}
+.q7{background:linear-gradient(140deg,#ffe0a8,#c8eaff)}
+.q8{background:linear-gradient(140deg,#f8c9ff,#c9f5ff)}
+.q9{background:linear-gradient(140deg,#d7ffb8,#ffcfda)}
+.q10{background:linear-gradient(140deg,#c6d5ff,#ffe0b9)}
+#question{
+ font-size:clamp(35px,9vw,52px);font-weight:900;
+ color:#39235e;margin:24px 0;
+ position:relative;z-index:1;
 }
-.info-pill{
- background:#fff;color:#7950b8;
- border-radius:20px;padding:9px 14px;
- font-weight:bold;font-size:13px;
-}
-.home-decoration{
- position:absolute;font-size:35px;opacity:.8;
- animation:float 4s infinite ease-in-out;
- pointer-events:none;
-}
-@keyframes float{
- 50%{transform:translateY(-18px) rotate(15deg)}
-}
-
-/* QUIZ */
-.quiz{background:linear-gradient(145deg,#f9edff,#e5f7ff)}
-.topbar{
- width:min(100%,550px);
- display:flex;justify-content:space-between;align-items:center;
- gap:10px;margin:4px auto 15px;
-}
-.small-btn{
- border-radius:30px;background:white;padding:10px 14px;
- color:#6544ad;font-weight:bold;
- box-shadow:0 4px 0 #d6c7f0;
-}
-.progress-area{width:min(100%,550px);margin-bottom:20px}
-.progress-text{
- display:flex;justify-content:space-between;
- font-weight:bold;font-size:14px;margin-bottom:8px;
- color:#6c55a0;
-}
-.progress-track{
- height:12px;border-radius:20px;background:#ddd1f4;overflow:hidden;
-}
-.progress-fill{
- height:100%;width:0%;
- background:linear-gradient(90deg,#ff8a4c,#f94c99);
- border-radius:20px;transition:width .4s;
-}
-.question-card{
- width:min(100%,550px);
- min-height:245px;
- border-radius:32px;
- padding:27px 19px;
- text-align:center;
- display:flex;flex-direction:column;
- justify-content:center;align-items:center;
- position:relative;
- box-shadow:0 9px 0 #00000017;
- transition:background .3s;
-}
-.question-number{
- font-size:13px;font-weight:900;
- letter-spacing:2px;
- opacity:.75;margin-bottom:12px;
-}
-.question-text{
- font-size:clamp(25px,6vw,36px);
- line-height:1.25;font-weight:1000;
-}
-.question-emoji{
- font-size:55px;margin-bottom:12px;
-}
-.question-sub{
- font-size:15px;margin-top:12px;font-weight:bold;opacity:.7;
-}
+#qemoji{font-size:37px}
 .options{
- width:min(100%,550px);
  display:grid;grid-template-columns:1fr 1fr;
- gap:15px;margin:24px auto 17px;
+ gap:13px;position:relative;z-index:1;
 }
-.option{
- min-height:105px;
- padding:12px 8px;
- display:flex;align-items:center;justify-content:center;
- flex-direction:column;gap:5px;
- font-size:25px;font-weight:1000;
- color:#fff;
- box-shadow:0 7px 0 #00000020;
- transition:transform .15s,filter .15s;
- position:relative;
+.opt{
+ min-height:76px;border-radius:23px;
+ font-size:24px;font-weight:900;color:#473064;
+ background:white;border:3px solid #ffffff;
+ box-shadow:0 5px 12px #46305b20;
+ transition:.15s;
 }
-.option:active{transform:translateY(5px);box-shadow:0 2px 0 #0002}
-.option .letter{font-size:12px;opacity:.85;letter-spacing:2px}
-.option:nth-child(1){background:#ff6386;border-radius:50px 16px 50px 16px}
-.option:nth-child(2){background:#438de9;border-radius:16px 50px 16px 50px}
-.option:nth-child(3){background:#24b99b;border-radius:16px 50px 16px 50px}
-.option:nth-child(4){background:#a06ae9;border-radius:50px 16px 50px 16px}
-.option.selected{outline:5px solid #ffcf47;transform:scale(1.04)}
-.option.correct{background:#17b978!important;outline:5px solid #a8ffd0}
-.option.wrong{background:#ed5265!important;outline:5px solid #ffc0c7}
-.option:disabled{cursor:default}
-.feedback{
- width:min(100%,550px);min-height:58px;
- border-radius:20px;background:white;
- padding:13px;text-align:center;
- font-weight:900;font-size:18px;
- display:none;box-shadow:0 4px 0 #00000012;
- margin-bottom:15px;
-}
-.feedback.show{display:block}
-.next-btn{
- width:min(100%,550px);padding:16px;
- border-radius:40px;background:#ffbb35;
- color:#553400;font-size:20px;font-weight:1000;
- box-shadow:0 6px 0 #d28a13;
- display:none;
-}
-.next-btn.show{display:block}
-.next-btn:active{transform:translateY(4px);box-shadow:0 2px 0 #d28a13}
-
-/* Different question page styles */
-.theme1 .question-card{background:#ffe18e;color:#77451b;border:5px solid white}
-.theme2 .question-card{background:#b5f2ed;color:#125f69;border:5px solid white;border-radius:70px 25px 70px 25px}
-.theme3 .question-card{background:#ffc5db;color:#8e285a;border:5px dashed white;border-radius:25px 65px 25px 65px}
-.theme4 .question-card{background:#d8c2ff;color:#57339a;border:5px solid white;border-radius:50% 50% 25px 25px}
-.theme5 .question-card{background:#bde1ff;color:#174b8b;border:5px solid white;border-radius:25px 25px 65px 65px}
-.theme6 .question-card{background:#c7f3a9;color:#386b24;border:5px solid white}
-.theme7 .question-card{background:#ffd0a4;color:#904515;border:5px solid white;border-radius:60px 20px}
-.theme8 .question-card{background:#c5c5ff;color:#35357e;border:5px solid white;border-radius:20px 60px}
-.theme9 .question-card{background:#a9e6ff;color:#145579;border:5px dashed white}
-.theme10 .question-card{background:#ffc1ae;color:#853c2b;border:5px solid white;border-radius:65px 20px 65px 20px}
-
-/* RESULTS */
-.result{
- background:linear-gradient(145deg,#ffdc76,#ff9cc8,#a98aff);
- justify-content:center;
-}
-.result-card{
- width:min(100%,440px);
- background:white;border-radius:35px;
- padding:28px 20px;text-align:center;
- box-shadow:0 10px 0 #8054bb;
-}
-.trophy{font-size:100px;animation:bounce 2s infinite}
-.result-title{font-size:34px;font-weight:1000;color:#8c4ed0}
-.score{font-size:65px;font-weight:1000;color:#ff6580;margin:10px}
-.result-message{font-size:18px;font-weight:bold;color:#777}
-.result-stats{
- display:flex;justify-content:space-around;
- background:#fff1d7;border-radius:20px;padding:15px;margin:18px 0;
-}
-.stat strong{display:block;font-size:26px;color:#784ac2}
-.stat span{font-size:12px;color:#777;font-weight:bold}
-.restart-btn{
- width:100%;background:#8058dc;color:white;
- padding:17px;border-radius:40px;
- font-size:21px;font-weight:1000;
- box-shadow:0 6px 0 #5933a8;
-}
-.sparkle{
- position:absolute;pointer-events:none;
- animation:fall 2s linear forwards;font-size:25px;
-}
-@keyframes fall{
- from{transform:translateY(-20px) rotate(0);opacity:1}
- to{transform:translateY(100vh) rotate(360deg);opacity:0}
-}
-.footer{margin-top:auto;padding-top:20px;color:#ffffffb8;font-size:12px;font-weight:bold}
-.quiz .footer{color:#927bb5}
-
+.opt:nth-child(1){border-radius:28px 12px 28px 12px}
+.opt:nth-child(2){border-radius:12px 28px 12px 28px}
+.opt:nth-child(3){border-radius:12px 28px 12px 28px}
+.opt:nth-child(4){border-radius:28px 12px 28px 12px}
+.opt:active{transform:scale(.95)}
+.opt.correct{background:#b9ffd1;border-color:#16bd70}
+.opt.wrong{background:#ffd0d0;border-color:#ef5555}
+.opt:disabled{cursor:default}
+#feedback{font-size:19px;font-weight:bold;min-height:34px;margin:15px 0 0}
+.starline{font-size:25px;letter-spacing:5px;color:#ffb900}
+#nextBtn{display:none;position:relative;z-index:2}
+.score{font-size:65px;font-weight:900;color:#7649e9}
+.result-emoji{font-size:65px}
+footer{text-align:center;font-size:12px;padding:20px;color:#756b88}
 @media(max-width:380px){
- .option{min-height:88px;font-size:22px}
- .question-card{min-height:220px}
- .options{gap:12px}
- .page{padding-left:12px;padding-right:12px}
+ #app{padding:10px}
+ .page{padding:18px 13px}
+ .opt{font-size:21px;min-height:68px}
 }
 </style>
 </head>
 
 <body>
-<div id="app">
+<header>
+ <h1>🌈 Math Masti World</h1>
+ <p>Learn • Play • Shine ⭐</p>
+</header>
 
-<!-- HOME PAGE -->
-<section class="page home" id="home">
- <div class="home-decoration" style="top:8%;left:7%">⭐</div>
- <div class="home-decoration" style="top:17%;right:8%">🌈</div>
- <div class="home-decoration" style="top:48%;left:5%">✨</div>
- <div class="home-decoration" style="top:55%;right:5%">🎈</div>
+<main id="app">
 
- <div class="logo">MATH <span>MASTI</span><br>WORLD</div>
- <div class="tagline">🎉 Learn Maths • Play • Win 🎉</div>
- <div class="hero">🦁</div>
+<!-- HOME -->
+<section id="home" class="page">
+ <div style="font-size:65px">🧮🌟</div>
+ <h2>Welcome to Math Masti World!</h2>
+ <p>Let's make Mathematics fun and exciting!</p>
 
- <div class="home-card">
-  <h2>Ready, Superstar? 🌟</h2>
-  <p>Let's make Maths super fun!</p>
-  <button class="start-btn" onclick="startQuiz()">🚀 LET'S PLAY!</button>
-  <div class="home-info">
-   <div class="info-pill">🧠 10 Questions</div>
-   <div class="info-pill">⭐ Earn Points</div>
-   <div class="info-pill">🏆 Win Trophy</div>
-  </div>
+ <input id="playerName" maxlength="20" placeholder="Enter your name">
+
+ <h3>Choose your Avatar</h3>
+ <div class="avatars" id="avatars">
+  <button class="avatar selected" data-avatar="🦁">🦁</button>
+  <button class="avatar" data-avatar="🐼">🐼</button>
+  <button class="avatar" data-avatar="🐰">🐰</button>
+  <button class="avatar" data-avatar="🐸">🐸</button>
+  <button class="avatar" data-avatar="🦄">🦄</button>
+  <button class="avatar" data-avatar="🐯">🐯</button>
  </div>
- <div class="footer">© MATH MASTI WORLD • LEARN WITH FUN</div>
+
+ <h3>Choose Language</h3>
+ <div class="grid">
+  <button class="tile selected" id="english">🇬🇧 English</button>
+  <button class="tile" id="hindi">🇮🇳 हिंदी</button>
+ </div>
+ <button class="primary" id="start">LET'S PLAY 🚀</button>
 </section>
 
-<!-- QUIZ PAGE -->
-<section class="page quiz hidden" id="quiz">
- <div class="topbar">
-  <button class="small-btn" onclick="goHome()">🏠 Home</button>
-  <div style="font-weight:1000;color:#7652bd">⭐ <span id="liveScore">0</span></div>
-  <button class="small-btn" onclick="toggleSound()" id="soundBtn">🔊 Sound</button>
+<!-- GAME SETTINGS -->
+<section id="settings" class="page hidden">
+ <div style="font-size:50px">🎮</div>
+ <h2 id="welcomeText">Choose Your Challenge!</h2>
+
+ <h3 id="operationTitle">Select Operation</h3>
+ <div class="grid" id="operations">
+  <button class="tile selected" data-op="add">➕ Addition</button>
+  <button class="tile" data-op="sub">➖ Subtraction</button>
+  <button class="tile" data-op="mul">✖️ Multiplication</button>
+  <button class="tile" data-op="div">➗ Division</button>
+  <button class="tile" data-op="mix" style="grid-column:span 2">🎲 Mix Challenge</button>
  </div>
 
- <div class="progress-area">
-  <div class="progress-text">
-   <span id="questionCount">QUESTION 1/10</span>
-   <span id="progressPercent">10%</span>
-  </div>
-  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+ <h3 id="countTitle">How many questions?</h3>
+ <div class="grid" id="counts">
+  <button class="tile selected" data-count="10">⭐ 10</button>
+  <button class="tile" data-count="20">🌟 20</button>
+  <button class="tile" data-count="30">🏆 30</button>
  </div>
-
- <div class="question-card" id="questionCard">
-  <div class="question-emoji" id="questionEmoji">🧮</div>
-  <div class="question-number" id="questionNumber">QUESTION 01</div>
-  <div class="question-text" id="questionText">5 + 5 = ?</div>
-  <div class="question-sub" id="questionSub">Choose the correct answer!</div>
- </div>
-
- <div class="options" id="options"></div>
- <div class="feedback" id="feedback"></div>
- <button class="next-btn" id="nextBtn" onclick="nextQuestion()">NEXT QUESTION ➜</button>
- <div class="footer">🌟 THINK • CHOOSE • SHINE 🌟</div>
+ <button class="primary" id="begin">START QUIZ 🚀</button>
+ <button class="secondary" id="back" style="margin-top:10px">← Back</button>
 </section>
 
-<!-- RESULT PAGE -->
-<section class="page result hidden" id="result">
- <div class="result-card">
-  <div class="trophy" id="trophy">🏆</div>
-  <div class="result-title" id="resultTitle">SUPERSTAR!</div>
-  <div class="score"><span id="finalScore">0</span>/10</div>
-  <div class="result-message" id="resultMessage">Amazing work!</div>
-  <div class="result-stats">
-   <div class="stat">
-    <strong id="correctCount">0</strong>
-    <span>CORRECT</span>
-   </div>
-   <div class="stat">
-    <strong id="wrongCount">0</strong>
-    <span>WRONG</span>
-   </div>
-   <div class="stat">
-    <strong id="percentage">0%</strong>
-    <span>SCORE</span>
-   </div>
-  </div>
-  <button class="restart-btn" onclick="startQuiz()">🔄 PLAY AGAIN</button>
-  <button class="small-btn" style="margin-top:15px" onclick="goHome()">🏠 HOME</button>
+<!-- QUIZ -->
+<section id="quiz" class="page hidden question-page q1">
+ <div class="topline">
+  <span id="playerDisplay">🦁 Champ</span>
+  <span id="progressText">Question 1/10</span>
+  <span id="scoreDisplay">⭐ 0</span>
  </div>
+ <div class="progress"><div id="bar"></div></div>
+ <div id="qemoji">🧠</div>
+ <div id="question">5 + 3 = ?</div>
+ <div class="options" id="options">
+  <button class="opt">8</button>
+  <button class="opt">6</button>
+  <button class="opt">9</button>
+  <button class="opt">7</button>
+ </div>
+ <div id="feedback"></div>
+ <div class="starline" id="stars">☆ ☆ ☆</div>
+ <button class="primary" id="nextBtn">NEXT QUESTION ➜</button>
 </section>
 
-</div>
+<!-- RESULT -->
+<section id="result" class="page hidden">
+ <div class="result-emoji" id="resultEmoji">🏆</div>
+ <h2 id="resultTitle">Amazing Work!</h2>
+ <p id="resultName">Well done, Champ!</p>
+ <div class="score" id="finalScore">10/10</div>
+ <h3 id="accuracy">100% Accuracy</h3>
+ <p id="resultMessage">You are a Math Superstar!</p>
+ <div class="starline" id="finalStars">⭐⭐⭐⭐⭐</div>
+ <button class="primary" id="again">PLAY AGAIN 🔄</button>
+ <button class="secondary" id="homeBtn" style="margin-top:10px">HOME 🏠</button>
+</section>
+
+</main>
+<footer>🌈 Math Masti World | Keep Learning, Keep Smiling!</footer>
 
 <script>
-const questions = [
- {q:"5 + 7 = ?",a:["10","12","13","14"],correct:1,emoji:"🍎",sub:"Let's add the numbers!"},
- {q:"9 × 3 = ?",a:["18","21","27","24"],correct:2,emoji:"🚀",sub:"Multiplication time!"},
- {q:"100 - 45 = ?",a:["55","65","45","50"],correct:0,emoji:"🍭",sub:"Let's subtract!"},
- {q:"Half of 50 is?",a:["20","30","25","15"],correct:2,emoji:"🍕",sub:"Find the half!"},
- {q:"12 ÷ 3 = ?",a:["3","4","6","5"],correct:1,emoji:"🎈",sub:"Division is fun!"},
- {q:"Which is the biggest number?",a:["45","54","35","25"],correct:1,emoji:"👑",sub:"Find the biggest!"},
- {q:"8 × 8 = ?",a:["64","56","72","48"],correct:0,emoji:"🦄",sub:"Think carefully!"},
- {q:"What comes after 199?",a:["198","200","201","190"],correct:1,emoji:"🌈",sub:"Number sequence!"},
- {q:"How many sides has a triangle?",a:["2","4","3","5"],correct:2,emoji:"🔺",sub:"Think about shapes!"},
- {q:"25 + 25 = ?",a:["40","45","55","50"],correct:3,emoji:"🎁",sub:"Final challenge!"}
-];
+(function(){
+"use strict";
 
-const themes=[
- "theme1","theme2","theme3","theme4","theme5",
- "theme6","theme7","theme8","theme9","theme10"
-];
+const $=id=>document.getElementById(id);
+const pages=["home","settings","quiz","result"];
+let language="en",avatar="🦁",name="Champ";
+let operation="add",total=10,index=0,score=0;
+let questions=[],answered=false;
 
-let current=0;
-let score=0;
-let wrong=0;
-let answered=false;
-let soundOn=true;
+const words={
+ en:{
+  welcome:"Choose Your Challenge!",operation:"Select Operation",
+  count:"How many questions?",start:"START QUIZ 🚀",
+  next:"NEXT QUESTION ➜",correct:["Brilliant! 🌟","Superstar! 🎉","Fantastic! 👏","You nailed it! 🏆","Amazing work! 💖"],
+  wrong:["Good try! Keep going! 💪","Never give up, Champ! 🌈","You can do it! ⭐"],
+  question:"Question",finished:"Amazing Work!",accuracy:"Accuracy",
+  perfect:"Math Superstar!",good:"Great effort! Keep practising!",
+  retry:"Let's shine again!",home:"HOME 🏠",play:"PLAY AGAIN 🔄"
+ },
+ hi:{
+  welcome:"अपनी चुनौती चुनें!",operation:"गणित का खेल चुनें",
+  count:"कितने सवाल खेलने हैं?",start:"खेल शुरू करें 🚀",
+  next:"अगला सवाल ➜",correct:["शानदार! 🌟","वाह चैंपियन! 🎉","बहुत खूब! 👏","कमाल कर दिया! 🏆","जबरदस्त! 💖"],
+  wrong:["अच्छी कोशिश! आगे बढ़ो! 💪","हार मत मानो! 🌈","तुम कर सकते हो! ⭐"],
+  question:"सवाल",finished:"शानदार प्रदर्शन!",accuracy:"सही जवाब",
+  perfect:"तुम Math Superstar हो!",good:"बहुत अच्छा प्रयास!",
+  retry:"फिर से खेलें!",home:"होम 🏠",play:"फिर खेलें 🔄"
+ }
+};
 
-function showPage(id){
- document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
- document.getElementById(id).classList.remove("hidden");
+function t(){return words[language]}
+function show(id){
+ pages.forEach(p=>$(p).classList.toggle("hidden",p!==id));
  window.scrollTo(0,0);
 }
 
-function startQuiz(){
- current=0;
- score=0;
- wrong=0;
- document.getElementById("liveScore").textContent="0";
- showPage("quiz");
- renderQuestion();
+function speak(text){
+ if(!("speechSynthesis" in window))return;
+ try{
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang=language==="hi"?"hi-IN":"en-IN";
+  u.rate=1;
+  u.pitch=1.15;
+  speechSynthesis.speak(u);
+ }catch(e){}
+}
+
+function choose(button,group){
+ group.querySelectorAll(".tile").forEach(b=>b.classList.remove("selected"));
+ button.classList.add("selected");
+}
+
+$("avatars").addEventListener("click",e=>{
+ const b=e.target.closest(".avatar");
+ if(!b)return;
+ avatar=b.dataset.avatar;
+ $("avatars").querySelectorAll(".avatar").forEach(x=>x.classList.remove("selected"));
+ b.classList.add("selected");
+});
+
+$("english").onclick=()=>{
+ language="en";choose($("english"),$("home").querySelector(".grid"));
+};
+$("hindi").onclick=()=>{
+ language="hi";choose($("hindi"),$("home").querySelector(".grid"));
+};
+
+$("start").onclick=()=>{
+ name=$("playerName").value.trim()||"Champ";
+ $("welcomeText").textContent=t().welcome;
+ $("operationTitle").textContent=t().operation;
+ $("countTitle").textContent=t().count;
+ $("begin").textContent=t().start;
+ show("settings");
+};
+
+$("operations").onclick=e=>{
+ const b=e.target.closest("[data-op]");
+ if(!b)return;
+ operation=b.dataset.op;choose(b,$("operations"));
+};
+$("counts").onclick=e=>{
+ const b=e.target.closest("[data-count]");
+ if(!b)return;
+ total=Number(b.dataset.count);choose(b,$("counts"));
+};
+$("back").onclick=()=>show("home");
+
+function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+
+function makeQuestion(op){
+ let a,b,answer,symbol;
+ if(op==="add"){
+  a=rand(1,99);b=rand(1,99);answer=a+b;symbol="+";
+ }else if(op==="sub"){
+  a=rand(10,99);b=rand(1,a);answer=a-b;symbol="−";
+ }else if(op==="mul"){
+  a=rand(2,12);b=rand(2,12);answer=a*b;symbol="×";
+ }else{
+  b=rand(2,12);answer=rand(2,12);a=b*answer;symbol="÷";
+ }
+ return {a,b,answer,symbol};
+}
+
+function makeQuestions(){
+ const ops=operation==="mix"?["add","sub","mul","div"]:[operation];
+ questions=[];
+ for(let i=0;i<total;i++){
+  questions.push(makeQuestion(ops[rand(0,ops.length-1)]));
+ }
+}
+
+function optionsFor(answer){
+ const set=new Set([answer]);
+ let attempts=0;
+ while(set.size<4&&attempts<100){
+  attempts++;
+  let offset=rand(1,Math.max(5,Math.ceil(Math.abs(answer)*.3)));
+  let value=answer+(Math.random()<.5?-offset:offset);
+  if(value>=0&&value!==answer)set.add(value);
+ }
+ let n=1;
+ while(set.size<4){set.add(answer+n++);}
+ return [...set].sort(()=>Math.random()-.5);
 }
 
 function renderQuestion(){
  answered=false;
- const q=questions[current];
+ const q=questions[index];
+ const palettes=["q1","q2","q3","q4","q5","q6","q7","q8","q9","q10"];
+ $("quiz").className="page question-page "+palettes[index%10];
+ $("playerDisplay").textContent=avatar+" "+name;
+ $("progressText").textContent=t().question+" "+(index+1)+"/"+total;
+ $("scoreDisplay").textContent="⭐ "+score;
+ $("bar").style.width=((index/total)*100)+"%";
+ $("question").textContent=q.a+" "+q.symbol+" "+q.b+" = ?";
+ $("qemoji").textContent=["🧠","🚀","🌟","🎯","🦄","🎈","🏆","🎨","🍭","🎮"][index%10];
+ $("feedback").textContent="";
+ $("stars").textContent="☆ ☆ ☆";
+ $("nextBtn").style.display="none";
+ $("nextBtn").textContent=index===total-1?(language==="hi"?"परिणाम देखें 🏆":"SEE RESULT 🏆"):t().next;
 
- const quiz=document.getElementById("quiz");
- quiz.className="page quiz "+themes[current];
-
- document.getElementById("questionCount").textContent=
- "QUESTION "+(current+1)+"/"+questions.length;
-
- document.getElementById("questionNumber").textContent=
- "CHALLENGE "+String(current+1).padStart(2,"0);
-
- document.getElementById("questionText").textContent=q.q;
- document.getElementById("questionEmoji").textContent=q.emoji;
- document.getElementById("questionSub").textContent=q.sub;
-
- const percent=((current+1)/questions.length)*100;
- document.getElementById("progressFill").style.width=percent+"%";
- document.getElementById("progressPercent").textContent=Math.round(percent)+"%";
-
- document.getElementById("feedback").className="feedback";
- document.getElementById("feedback").textContent="";
- document.getElementById("nextBtn").classList.remove("show");
- document.getElementById("nextBtn").textContent=
- current===questions.length-1?"SEE MY RESULT 🏆":"NEXT QUESTION ➜";
-
- const container=document.getElementById("options");
- container.innerHTML="";
-
- q.a.forEach((answer,index)=>{
+ const opts=optionsFor(q.answer);
+ const box=$("options");box.innerHTML="";
+ opts.forEach((value,i)=>{
   const btn=document.createElement("button");
-  btn.className="option";
-  btn.innerHTML=
-   '<span class="letter">OPTION '+String.fromCharCode(65+index)+'</span>'+
-   '<span>'+answer+'</span>';
-  btn.onclick=()=>checkAnswer(index,btn);
-  container.appendChild(btn);
+  btn.className="opt";
+  btn.textContent=["⭐ ","💎 ","🌈 ","🎈 "][i]+value;
+  btn.onclick=()=>checkAnswer(btn,value,q.answer);
+  box.appendChild(btn);
  });
 }
 
-function checkAnswer(index,btn){
+function checkAnswer(btn,value,answer){
  if(answered)return;
  answered=true;
-
- const q=questions[current];
- const buttons=document.querySelectorAll(".option");
- const feedback=document.getElementById("feedback");
-
- buttons.forEach(b=>b.disabled=true);
-
- if(index===q.correct){
+ const buttons=[...$("options").querySelectorAll("button")];
+ buttons.forEach(b=>{
+  b.disabled=true;
+  if(Number(b.textContent.replace(/^[^0-9-]*/,""))===answer)b.classList.add("correct");
+ });
+ if(value===answer){
   score++;
-  btn.classList.add("correct");
-  feedback.innerHTML="🎉 SUPER! Correct Answer! ⭐";
-  feedback.style.color="#159d64";
-  speak("Amazing! You are a superstar!");
+  $("feedback").textContent="🎉 "+t().correct[rand(0,t().correct.length-1)];
+  $("stars").textContent="⭐ ⭐ ⭐";
+  speak(t().correct[0]);
  }else{
-  wrong++;
   btn.classList.add("wrong");
-  buttons[q.correct].classList.add("correct");
-  feedback.innerHTML="💛 Nice try! Correct answer: "+q.a[q.correct];
-  feedback.style.color="#e45468";
-  speak("Nice try! Keep learning!");
+  $("feedback").textContent="💖 "+t().wrong[rand(0,t().wrong.length-1)]+" Answer: "+answer;
+  $("stars").textContent="☆ ⭐ ☆";
+  speak(t().wrong[0]);
  }
-
- feedback.classList.add("show");
- document.getElementById("liveScore").textContent=score;
- document.getElementById("nextBtn").classList.add("show");
+ $("scoreDisplay").textContent="⭐ "+score;
+ $("nextBtn").style.display="block";
 }
 
-function nextQuestion(){
+function finish(){
+ show("result");
+ const accuracy=Math.round(score/total*100);
+ $("resultEmoji").textContent=accuracy===100?"🏆":accuracy>=70?"🥳":accuracy>=40?"🌟":"💪";
+ $("resultTitle").textContent=t().finished;
+ $("resultName").textContent=avatar+" "+name+"!";
+ $("finalScore").textContent=score+"/"+total;
+ $("accuracy").textContent=t().accuracy+": "+accuracy+"%";
+ $("resultMessage").textContent=accuracy===100?t().perfect:accuracy>=50?t().good:t().retry;
+ $("finalStars").textContent=accuracy>=90?"⭐⭐⭐⭐⭐":accuracy>=70?"⭐⭐⭐⭐":accuracy>=40?"⭐⭐⭐":"⭐⭐";
+ speak(accuracy===100?t().perfect:t().good);
+}
+
+$("begin").onclick=()=>{
+ index=0;score=0;makeQuestions();
+ show("quiz");renderQuestion();
+};
+
+$("nextBtn").onclick=()=>{
  if(!answered)return;
- current++;
- if(current<questions.length){
-  renderQuestion();
- }else{
-  showResult();
- }
-}
+ if(index<total-1){index++;renderQuestion();}
+ else finish();
+};
 
-function showResult(){
- showPage("result");
- document.getElementById("finalScore").textContent=score;
- document.getElementById("correctCount").textContent=score;
- document.getElementById("wrongCount").textContent=wrong;
- document.getElementById("percentage").textContent=
- Math.round(score/questions.length*100)+"%";
+$("again").onclick=()=>{
+ index=0;score=0;makeQuestions();
+ show("quiz");renderQuestion();
+};
+$("homeBtn").onclick=()=>show("home");
 
- let title,message,trophy;
+$("home").classList.remove("hidden");
+show("home");
 
- if(score===10){
-  title="MATH CHAMPION!";
-  message="WOW! Perfect score! You are amazing! 🌟";
-  trophy="🏆";
- }else if(score>=7){
-  title="SUPERSTAR!";
-  message="Fantastic! You did a brilliant job! 🎉";
-  trophy="🥇";
- }else if(score>=4){
-  title="GREAT TRY!";
-  message="Keep practising. You are getting better! 💪";
-  trophy="🥈";
- }else{
-  title="KEEP SHINING!";
-  message="Every mistake helps you learn. Try again! ❤️";
-  trophy="🌟";
- }
-
- document.getElementById("resultTitle").textContent=title;
- document.getElementById("resultMessage").textContent=message;
- document.getElementById("trophy").textContent=trophy;
- celebrate();
- speak(message);
-}
-
-function celebrate(){
- const symbols=["⭐","✨","🎉","🌈","💖","🎊"];
- for(let i=0;i<35;i++){
-  let s=document.createElement("div");
-  s.className="sparkle";
-  s.textContent=symbols[Math.floor(Math.random()*symbols.length)];
-  s.style.left=Math.random()*100+"%";
-  s.style.top="-30px";
-  s.style.animationDelay=Math.random()*2+"s";
-  document.getElementById("result").appendChild(s);
-  setTimeout(()=>s.remove(),4500);
- }
-}
-
-function speak(message){
- if(!soundOn)return;
- if(!("speechSynthesis" in window))return;
- window.speechSynthesis.cancel();
- const utterance=new SpeechSynthesisUtterance(message);
- utterance.rate=0.95;
- utterance.pitch=1.2;
- utterance.lang="en-IN";
- window.speechSynthesis.speak(utterance);
-}
-
-function toggleSound(){
- soundOn=!soundOn;
- document.getElementById("soundBtn").textContent=
- soundOn?"🔊 Sound":"🔇 Sound";
- if(!soundOn && "speechSynthesis" in window){
-  window.speechSynthesis.cancel();
- }
-}
-
-function goHome(){
- if("speechSynthesis" in window)window.speechSynthesis.cancel();
- showPage("home");
-}
+})();
 </script>
 </body>
 </html>
